@@ -8,8 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class StackOverflowLink extends Link {
-    private static final String regex = "^https://(ru\\.)?stackoverflow\\.com/questions/([0-9]+)/.*";
-    private static final Pattern pattern = Pattern.compile(regex);
+    private static final String REGEX = "^https://(ru\\.)?stackoverflow\\.com/questions/([0-9]+)/.*";
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     public StackOverflowLink(Link nextLink) {
         super(nextLink);
@@ -17,7 +17,7 @@ public final class StackOverflowLink extends Link {
 
     @Override
     public ParseResult matches(URL url) {
-        Matcher matcher = pattern.matcher(url.toString());
+        Matcher matcher = PATTERN.matcher(url.toString());
         if (matcher.matches()) {
             return new StackOverflowParseResult(Long.parseLong(matcher.group(2)));
         } else if (nextLink != null) {
