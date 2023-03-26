@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+app:
+  test: helloScrapper
+  scheduler:
+    interval: 10000
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+
+client:
+    url:
+      github: https://api.github.com/repos/
+      stackoverflow: https://api.stackexchange.com/2.3/questions/
