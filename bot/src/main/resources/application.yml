@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+app:
+  test: helloBot
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
