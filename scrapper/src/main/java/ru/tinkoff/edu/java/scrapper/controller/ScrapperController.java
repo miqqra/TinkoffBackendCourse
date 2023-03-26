@@ -25,7 +25,6 @@ import ru.tinkoff.edu.java.scrapper.service.ScrapperService;
 public class ScrapperController {
     private final ScrapperService scrapperService;
 
-
     @ApiOperation(value = "Зарегистрировать чат")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Чат зарегистрирован"),
