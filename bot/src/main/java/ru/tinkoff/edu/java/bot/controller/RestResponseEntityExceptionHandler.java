@@ -11,9 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.tinkoff.edu.java.bot.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.bot.exception.IncorrectDataException;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -27,9 +24,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                         HttpStatusCode.valueOf(400).toString(),
                         e.toString(),
                         webRequest.toString(),
-                        Arrays.stream(e.getStackTrace())
-                                .map(StackTraceElement::toString)
-                                .collect(Collectors.toList())),
+                        null),
                 HttpStatusCode.valueOf(400)
         );
     }

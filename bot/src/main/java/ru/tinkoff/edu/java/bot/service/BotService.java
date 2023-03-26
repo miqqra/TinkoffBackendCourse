@@ -12,6 +12,7 @@ public class BotService {
     private final BotRepository botRepository;
 
     public void sendUpdate(LinkUpdate sendUpdateRequest) {
+
         if (sendUpdateRequest.getId() == -1){
             throw new IncorrectDataException("Некорректные параметры запроса");
         }
