@@ -11,6 +11,7 @@ import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.exception.DataNotFoundException;
+import ru.tinkoff.edu.java.scrapper.exception.ExistingDataException;
 import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.repository.ScrapperRepository;
 
@@ -28,15 +29,17 @@ public class ScrapperService {
     }
 
     public void registerChat(Long id) {
-        if (id == -1) {
+        if (id < 0) {
             throw new IncorrectDataException("Некорректные параметры запроса");
+        } else if (!scrapperRepository.add(id)) {
+            throw new ExistingDataException("Чат с таким id уже существует");
         }
     }
 
     public void deleteChat(Long id) {
-        if (id == -1) {
+        if (id < 0) {
             throw new IncorrectDataException("Некорректные параметры запроса");
-        } else if (id == 0) {
+        } else if (!scrapperRepository.delete(id)) {
             throw new DataNotFoundException("Чат не существует");
         }
     }
@@ -70,29 +73,25 @@ public class ScrapperService {
 
     public GetGitHubInfoResponse getGitHubInfo(String userName, String repositoryName) {
         String path = "%s/%s/commits".formatted(userName, repositoryName);
-        GetGitHubInfoResponse[] response = gitHubClient
+        GetGitHubInfoResponse response = gitHubClient
                 .webClient()
                 .get()
                 .uri(path)
                 .retrieve()
-                .bodyToMono(GetGitHubInfoResponse[].class)
+                .bodyToMono(GetGitHubInfoResponse.class)
                 .block();
-        return null;
+        return response;
     }
 
     public GetStackOverflowInfoResponse GetStackOverflowInfo(long questionId) {
         String path = "%l?site=stackoverflow".formatted(questionId);
-        GetStackOverflowInfoResponse[] response = gitHubClient
+        GetStackOverflowInfoResponse response = gitHubClient
                 .webClient()
                 .get()
                 .uri(path)
                 .retrieve()
-                .bodyToMono(GetStackOverflowInfoResponse[].class)
+                .bodyToMono(GetStackOverflowInfoResponse.class)
                 .block();
-        return null;
-    }
-
-    public void checkForUpdate() {
-
+        return response;
     }
 }
