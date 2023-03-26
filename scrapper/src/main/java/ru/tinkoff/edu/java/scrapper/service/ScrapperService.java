@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowClient;
@@ -15,18 +15,15 @@ import ru.tinkoff.edu.java.scrapper.exception.ExistingDataException;
 import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.repository.ScrapperRepository;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class ScrapperService {
     private final ScrapperRepository scrapperRepository;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
 
-    @Autowired
-    public ScrapperService(ScrapperRepository scrapperRepository, GitHubClient gitHubClient, StackOverflowClient stackOverflowClient) {
-        this.scrapperRepository = scrapperRepository;
-        this.gitHubClient = gitHubClient;
-        this.stackOverflowClient = stackOverflowClient;
-    }
 
     public void registerChat(Long id) {
         if (id < 0) {
@@ -44,21 +41,24 @@ public class ScrapperService {
         }
     }
 
-
     public ListLinksResponse getAllTrackedLinks(Long tgChatId) {
-        if (tgChatId == -1) {
+        if (tgChatId < 0) {
             throw new IncorrectDataException("Некорректные параметры запроса");
-        } else {
-            return null;
         }
+        List<LinkResponse> linkResponses = scrapperRepository
+                .findAll()
+                .stream()
+                .filter(x -> x.getTgCharIds().contains(tgChatId))
+                .map(x -> new LinkResponse(x.getId(), x.getUrl()))
+                .toList();
+        return new ListLinksResponse(linkResponses, linkResponses.size());
     }
 
     public LinkResponse addTrackedLink(AddLinkRequest addLinkRequest, Long tgChatId) {
-        if (tgChatId == -1) {
+        if (tgChatId < 0) {
             throw new IncorrectDataException("Некорректные параметры запроса");
-        } else {
-            return null;
         }
+        return null;
     }
 
     public LinkResponse deleteTrackedLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {

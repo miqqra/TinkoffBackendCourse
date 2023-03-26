@@ -30,4 +30,8 @@ public class ScrapperRepository {
         }
         return false;
     }
+
+    public List<Chat> findAll() {
+        return chats;
+    }
 }
