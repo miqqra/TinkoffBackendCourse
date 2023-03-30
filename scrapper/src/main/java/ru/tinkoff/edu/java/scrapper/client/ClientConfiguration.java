@@ -17,24 +17,24 @@ public class ClientConfiguration {
     private static final String STACKOVERFLOW_URL = "https://api.stackexchange.com/2.3/questions";
 
     @Bean
-    public static GitHubClient createGitHubClient() {
+    public GitHubClient createGitHubClient() {
         return new GitHubClient(createWebClient(GITHUB_URL));
     }
 
     @Bean
-    public static StackOverflowClient createStackOverflowClient() {
+    public StackOverflowClient createStackOverflowClient() {
         return new StackOverflowClient(createWebClient(STACKOVERFLOW_URL));
     }
 
-    public static GitHubClient createGitHubClient(String newURL) {
+    public GitHubClient createGitHubClient(String newURL) {
         return new GitHubClient(createWebClient(newURL));
     }
 
-    public static StackOverflowClient createStackOverflowClient(String newURL) {
+    public StackOverflowClient createStackOverflowClient(String newURL) {
         return new StackOverflowClient(createWebClient(newURL));
     }
 
-    private static WebClient createWebClient(String baseURL) {
+    private WebClient createWebClient(String baseURL) {
         return WebClient.builder()
                 .baseUrl(baseURL)
                 .build();
