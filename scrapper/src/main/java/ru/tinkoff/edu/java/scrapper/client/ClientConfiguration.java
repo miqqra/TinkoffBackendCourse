@@ -11,10 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ClientConfiguration {
 
     @Value("${client.url.github}")
-    private static final String GITHUB_URL = "https://api.github.com/repos/";
+    private static final String GITHUB_URL = "https://api.github.com/repos";
 
     @Value("${client.url.stackoverflow}")
-    private static final String STACKOVERFLOW_URL = "https://api.stackexchange.com/2.3/questions/";
+    private static final String STACKOVERFLOW_URL = "https://api.stackexchange.com/2.3/questions";
 
     @Bean
     public static GitHubClient createGitHubClient() {

@@ -8,6 +8,6 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{${app.scheduler.interval}}")
     public void update() {
-        System.out.println("checked");
+        //System.out.println("checked");
     }
 }

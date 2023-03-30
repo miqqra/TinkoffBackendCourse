@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.service.ScrapperService;
@@ -80,6 +83,19 @@ public class ScrapperController {
             @RequestHeader Long tgChatId,
             @RequestBody RemoveLinkRequest removeLinkRequest) {
         return scrapperService.deleteTrackedLink(tgChatId, removeLinkRequest);
+    }
+
+    @GetMapping(value = "/stackoverflow/api")
+    public GetStackOverflowInfoResponse getStackOverflowInfo(
+            @RequestParam Long id) {
+        return scrapperService
+                .getStackOverflowInfo(id);
+    }
+
+    @GetMapping("/github/api")
+    public GetGitHubInfoResponse getGitHubInfo(
+            @RequestParam String username, @RequestParam String repo) {
+        return scrapperService.getGitHubInfo(username, repo);
     }
 
 }

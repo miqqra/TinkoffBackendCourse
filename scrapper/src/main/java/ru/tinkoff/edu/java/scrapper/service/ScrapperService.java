@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowClient;
@@ -15,6 +16,7 @@ import ru.tinkoff.edu.java.scrapper.exception.ExistingDataException;
 import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.repository.ScrapperRepository;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -72,7 +74,7 @@ public class ScrapperService {
     }
 
     public GetGitHubInfoResponse getGitHubInfo(String userName, String repositoryName) {
-        String path = "%s/%s/commits".formatted(userName, repositoryName);
+        String path = "/%s/%s".formatted(userName, repositoryName);
         GetGitHubInfoResponse response = gitHubClient
                 .webClient()
                 .get()
@@ -83,15 +85,26 @@ public class ScrapperService {
         return response;
     }
 
-    public GetStackOverflowInfoResponse GetStackOverflowInfo(long questionId) {
-        String path = "%l?site=stackoverflow".formatted(questionId);
-        GetStackOverflowInfoResponse response = gitHubClient
+    public GetStackOverflowInfoResponse getStackOverflowInfo(Long questionId) {
+        GetStackOverflowInfoResponse response = stackOverflowClient
                 .webClient()
                 .get()
-                .uri(path)
+                .uri(uri -> {
+                    URI build = uri.path(String.format("/%d", questionId))
+                            .queryParam("site", "stackoverflow")
+                            .build();
+                    System.out.println(build);
+                    return build;
+                })
+                .headers(httpHeaders -> {
+                    httpHeaders.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+                    httpHeaders.add(HttpHeaders.CONTENT_ENCODING, "gzip");
+                    httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
+                })
                 .retrieve()
                 .bodyToMono(GetStackOverflowInfoResponse.class)
                 .block();
+
         return response;
     }
 }
