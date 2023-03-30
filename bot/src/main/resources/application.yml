@@ -2,7 +2,7 @@ server:
   port: 8080
 
 app:
-  test: helloBot
+  token: helloBot
 
 springdoc:
   swagger-ui:
