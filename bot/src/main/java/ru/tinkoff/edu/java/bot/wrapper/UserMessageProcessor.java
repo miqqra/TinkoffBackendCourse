@@ -6,10 +6,10 @@ import ru.tinkoff.edu.java.bot.commands.BotCommand;
 
 import java.util.List;
 
-public class UserMessageProcessorImpl {
+public class UserMessageProcessor {
     private static List<? extends BotCommand> commands;
 
-    public UserMessageProcessorImpl(List<? extends BotCommand> commands) {
+    public UserMessageProcessor(List<? extends BotCommand> commands) {
         this.commands = commands;
     }
 
@@ -18,18 +18,15 @@ public class UserMessageProcessorImpl {
     }
 
     public SendMessage process(Update update) {
-        var a = commands
+        return commands
                 .stream()
                 .filter(command -> command.supports(update))
-                .findAny();
-        if (a.isPresent()) {
-            return a.get().handle(update);
-        } else {
-            return null;
-        }
+                .findAny()
+                .map(command -> command.handle(update))
+                .orElse(null);
     }
 
-    public static String showAllCommands(){
+    public static String showAllCommands() {
         StringBuilder stringBuilder = new StringBuilder();
         commands
                 .stream()

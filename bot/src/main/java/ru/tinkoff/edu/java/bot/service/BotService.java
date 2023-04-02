@@ -2,18 +2,17 @@ package ru.tinkoff.edu.java.bot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import ru.tinkoff.edu.java.bot.client.BotClient;
 import ru.tinkoff.edu.java.bot.dto.request.LinkUpdate;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
+import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.exception.IncorrectDataException;
-import ru.tinkoff.edu.java.bot.repository.BotRepository;
-import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessorImpl;
+import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
 
 @Service
 @RequiredArgsConstructor
 public class BotService {
-    private final BotRepository botRepository;
-    private final WebClient webClient;
+    private final BotClient botClient;
 
     public void sendUpdate(LinkUpdate sendUpdateRequest) {
 
@@ -23,16 +22,26 @@ public class BotService {
     }
 
     public String showCommandsList() {
-        return UserMessageProcessorImpl.showAllCommands();
+        return UserMessageProcessor.showAllCommands();
     }
 
-    public String showTrackedLinks() {
-        return null;
+    public String showTrackedLinks(Long id) {
+        String path = "/links";
+        ListLinksResponse listLinksResponse = botClient
+                .webClient()
+                .get()
+                .uri(path)
+                .header("tgChatId", id.toString())
+                .retrieve()
+                .bodyToMono(ListLinksResponse.class)
+                .block();
+        return listLinksResponse == null ? "" : listLinksResponse.getLinks().toString();
     }
 
     public void registrateUser(Integer id) {
         String path = "tg-chat/%d".formatted(id);
-        webClient
+        botClient
+                .webClient()
                 .post()
                 .uri(path)
                 .retrieve()
@@ -42,8 +51,8 @@ public class BotService {
 
     public String startTrackingLink(String newLink) {
         String path = "/links";
-        //todo
-        LinkResponse linkResponse = webClient
+        LinkResponse linkResponse = botClient
+                .webClient()
                 .post()
                 .uri(path)
                 .retrieve()
@@ -52,9 +61,10 @@ public class BotService {
         return "Ссылка добавлена";
     }
 
-    public String stopTrackingLink() {
+    public String stopTrackingLink(String link) {
         String path = "/links";
-        LinkResponse linkResponse = webClient
+        LinkResponse linkResponse = botClient
+                .webClient()
                 .delete()
                 .uri(path)
                 .retrieve()

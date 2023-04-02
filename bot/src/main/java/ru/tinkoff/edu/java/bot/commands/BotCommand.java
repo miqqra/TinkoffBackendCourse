@@ -14,16 +14,25 @@ public sealed abstract class BotCommand permits
     private String description;
 
     public String getCommand() {
-        return command;
+        return this.command;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public abstract SendMessage handle(Update update);
 
     public boolean supports(Update update) {
         return update.message().text().split(" ")[0].equals(getCommand());
+    }
+
+    public String getArgument(Update update) {
+        String[] strings = update.message().text().split(" ");
+        if (strings.length < 2) {
+            return null;
+        } else {
+            return strings[1];
+        }
     }
 }
