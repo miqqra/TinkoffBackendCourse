@@ -18,12 +18,15 @@ public class UserMessageProcessor {
     }
 
     public SendMessage process(Update update) {
-        return commands
+        BotCommand correctCommand = commands
                 .stream()
                 .filter(command -> command.supports(update))
                 .findAny()
-                .map(command -> command.handle(update))
                 .orElse(null);
+        if (correctCommand == null){
+            return new SendMessage(BotCommand.getUserId(update), "Неккоректная комманда");
+        }
+        return correctCommand.handle(update);
     }
 
     public static String showAllCommands() {

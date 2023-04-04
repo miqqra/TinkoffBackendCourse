@@ -35,4 +35,8 @@ public sealed abstract class BotCommand permits
             return strings[1];
         }
     }
+
+    public static Long getUserId(Update update){
+        return update.message().chat().id();
+    }
 }

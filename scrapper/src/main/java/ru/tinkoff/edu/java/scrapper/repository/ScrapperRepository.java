@@ -3,15 +3,12 @@ package ru.tinkoff.edu.java.scrapper.repository;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ScrapperRepository {
-    List<Chat> chats = List.of(
-            new Chat(0L),
-            new Chat(1L),
-            new Chat(2L),
-            new Chat(3L));
+    List<Chat> chats = new ArrayList<>();
 
 
     public boolean add(Long id) {

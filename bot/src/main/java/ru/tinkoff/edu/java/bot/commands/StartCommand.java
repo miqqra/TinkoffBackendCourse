@@ -25,8 +25,6 @@ public final class StartCommand extends BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        System.out.println("start");
-        botService.registrateUser(update.updateId());
-        return null;
+        return new SendMessage(getUserId(update), botService.registrateUser(getUserId(update)));
     }
 }

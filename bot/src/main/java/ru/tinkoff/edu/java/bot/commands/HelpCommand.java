@@ -25,9 +25,9 @@ public final class HelpCommand extends BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        System.out.println("help");
+        Long userId = getUserId(update);
         return new SendMessage(
-                update.updateId(),
+                userId,
                 botService.showCommandsList()
         );
     }

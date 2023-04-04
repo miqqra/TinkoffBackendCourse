@@ -26,8 +26,9 @@ public final class UntrackCommand extends BotCommand {
     @Override
     public SendMessage handle(Update update) {
         System.out.println("untrack");
+        Long userId = getUserId(update);
         return new SendMessage(
-                update.updateId(),
-                botService.stopTrackingLink(getArgument(update)));
+                userId,
+                botService.stopTrackingLink(getArgument(update), userId));
     }
 }

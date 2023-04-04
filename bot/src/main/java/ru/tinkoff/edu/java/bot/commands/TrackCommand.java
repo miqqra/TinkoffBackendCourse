@@ -25,9 +25,8 @@ public final class TrackCommand extends BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        System.out.println("track");
         return new SendMessage(
-                update.updateId(),
-                botService.startTrackingLink(getArgument(update)));
+                getUserId(update),
+                botService.startTrackingLink(getArgument(update), getUserId(update)));
     }
 }

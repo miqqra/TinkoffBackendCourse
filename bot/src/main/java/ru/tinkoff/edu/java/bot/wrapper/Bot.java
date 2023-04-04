@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,21 +32,19 @@ public class Bot {
     private final UntrackCommand untrackCommand;
 
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
-        System.out.println("execute");
         telegramBot.execute(request);
     }
 
     public int process(List<Update> updates) {
-        updates.forEach(update -> userMessageProcessor.process(update));
-        updates
+        List<SendMessage> sendMessages = updates
                 .stream()
                 .map(update -> userMessageProcessor.process(update))
-                .map(sendMessage -> telegramBot.execute(sendMessage));
+                .toList();
+        sendMessages.forEach(sendMessage -> telegramBot.execute(sendMessage));
         return 0;
     }
 
     public void start() {
-        System.out.println("start");
         telegramBot = new TelegramBot(token);
         userMessageProcessor = new UserMessageProcessor(
                 List.of(helpCommand, listCommand, startCommand, trackCommand, untrackCommand)
