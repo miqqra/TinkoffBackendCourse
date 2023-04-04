@@ -24,7 +24,7 @@ public class UserMessageProcessor {
                 .findAny()
                 .orElse(null);
         if (correctCommand == null){
-            return new SendMessage(BotCommand.getUserId(update), "Неккоректная комманда");
+            return new SendMessage(BotCommand.getUserId(update), "Некорректная команда");
         }
         return correctCommand.handle(update);
     }
