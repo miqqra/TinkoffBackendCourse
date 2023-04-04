@@ -34,7 +34,6 @@ public class ScrapperController {
     })
     @PostMapping(value = "/tg-chat/{id}")
     public ResponseEntity<String> registerChat(@PathVariable Long id) {
-        System.out.println("registrate");
         scrapperService.registerChat(id);
         return ResponseEntity.ok("Чат создан");
     }
@@ -58,7 +57,6 @@ public class ScrapperController {
     })
     @GetMapping("/links")
     public ListLinksResponse getAllTrackedLinks(@RequestHeader Long tgChatId) {
-        System.out.println(tgChatId);
         return scrapperService.getAllTrackedLinks(tgChatId);
     }
 

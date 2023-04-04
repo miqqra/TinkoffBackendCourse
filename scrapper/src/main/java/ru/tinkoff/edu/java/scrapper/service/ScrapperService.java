@@ -18,6 +18,7 @@ import ru.tinkoff.edu.java.scrapper.repository.ScrapperRepository;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,11 +49,10 @@ public class ScrapperService {
             throw new IncorrectDataException("Некорректные параметры запроса");
         }
         List<LinkResponse> linkResponses = scrapperRepository
-                .findAll()
+                .findAll(tgChatId)
                 .stream()
-                .filter(x -> x.getTgCharIds().contains(tgChatId))
-                .map(x -> new LinkResponse(x.getId(), x.getUrl()))
-                .toList();
+                .map(x -> new LinkResponse(1L, x))
+                .collect(Collectors.toList());
         return new ListLinksResponse(linkResponses, linkResponses.size());
     }
 
@@ -60,7 +60,8 @@ public class ScrapperService {
         if (tgChatId < 0) {
             throw new IncorrectDataException("Некорректные параметры запроса");
         }
-        return null;
+        scrapperRepository.add(tgChatId, addLinkRequest.getLink());
+        return new LinkResponse(tgChatId, addLinkRequest.getLink());
     }
 
     public LinkResponse deleteTrackedLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
@@ -69,7 +70,8 @@ public class ScrapperService {
         } else if (tgChatId == 0) {
             throw new DataNotFoundException("Ссылка не найдена");
         } else {
-            return null;
+            scrapperRepository.delete(tgChatId, removeLinkRequest.getLink());
+            return new LinkResponse(tgChatId, removeLinkRequest.getLink());
         }
     }
 
@@ -93,7 +95,6 @@ public class ScrapperService {
                     URI build = uri.path(String.format("/%d", questionId))
                             .queryParam("site", "stackoverflow")
                             .build();
-                    System.out.println(build);
                     return build;
                 })
                 .headers(httpHeaders -> {

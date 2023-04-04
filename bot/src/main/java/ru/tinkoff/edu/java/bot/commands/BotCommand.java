@@ -30,7 +30,7 @@ public sealed abstract class BotCommand permits
     public String getArgument(Update update) {
         String[] strings = update.message().text().split(" ");
         if (strings.length < 2) {
-            return null;
+            return "";
         } else {
             return strings[1];
         }

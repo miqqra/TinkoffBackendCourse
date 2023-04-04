@@ -36,7 +36,6 @@ public class BotService {
 
     public ListLinksResponse showTrackedLinks(Long id) {
         String path = "/links";
-        System.out.println(id.toString());
         ListLinksResponse listLinksResponse = botClient
                 .webClient()
                 .get()
@@ -59,7 +58,7 @@ public class BotService {
         try {
             return response.block().getBody().toString();
         } catch (WebClientResponseException e) {
-            return "Ошибка при регистрации";
+            return "Пользователь уже зарегистрирован";
         }
     }
 

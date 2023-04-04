@@ -30,10 +30,17 @@ public final class ListCommand extends BotCommand {
     public SendMessage handle(Update update) {
         Long userId = getUserId(update);
         List<LinkResponse> listLinksResponse = botService.showTrackedLinks(userId).links();
-        String result = listLinksResponse.isEmpty() ? "Нет отслеживаемых ссылок" : listLinksResponse.toString();
+        String result = listLinksResponse.isEmpty() ? "Нет отслеживаемых ссылок" : prettyPrint(listLinksResponse);
         return new SendMessage(
                 userId,
                 result
         );
+    }
+
+    private String prettyPrint(List<LinkResponse> linkResponses){
+        StringBuilder stringBuilder = new StringBuilder();
+        linkResponses
+                .forEach(linkResponse -> stringBuilder.append(linkResponse.url()).append("\n"));
+        return stringBuilder.toString();
     }
 }
