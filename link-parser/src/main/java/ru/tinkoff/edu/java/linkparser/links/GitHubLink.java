@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class GitHubLink extends Link {
-    private static final String REGEX = "^https://github\\.com/([a-zA-Z0-9]+)/([a-zA-Z0-9-]+).*";
+    private static final String REGEX = "^https://github\\.com/([a-zA-Z0-9]+)/([a-zA-Z0-9-]+)(/.*)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     public GitHubLink(Link nextLink) {

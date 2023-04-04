@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class StackOverflowLink extends Link {
-    private static final String REGEX = "^https://(ru\\.)?stackoverflow\\.com/questions/([0-9]+)/.*";
+    private static final String REGEX = "^https://(ru\\.)?stackoverflow\\.com/questions/([0-9]+)(/.*)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     public StackOverflowLink(Link nextLink) {
