@@ -72,7 +72,7 @@ public class BotService {
             botClient
                     .stopTrackingLink(uri, userId)
                     .block();
-        } catch (WebClientResponseException e){
+        } catch (WebClientResponseException e) {
             return "Неккоректная ссылка";
         }
         return "Ссылка больше не отслеживается";

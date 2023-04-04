@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +33,11 @@ public class ScrapperController {
             @ApiResponse(code = 400, message = "Некорректные параметры запроса", response = ApiErrorResponse.class)
     })
     @PostMapping(value = "/tg-chat/{id}")
-    public void registerChat(@PathVariable Long id) {
+    public ResponseEntity<String> registerChat(@PathVariable Long id) {
+        System.out.println("registrate");
         scrapperService.registerChat(id);
+        return ResponseEntity.ok("Чат создан");
     }
-
 
     @ApiOperation(value = "Удалить чат")
     @ApiResponses(value = {
@@ -44,8 +46,9 @@ public class ScrapperController {
             @ApiResponse(code = 404, message = "Чат не существует", response = ApiErrorResponse.class)
     })
     @DeleteMapping(value = "/tg-chat/{id}")
-    public void deleteChat(@PathVariable Long id) {
+    public ResponseEntity<String> deleteChat(@PathVariable Long id) {
         scrapperService.deleteChat(id);
+        return ResponseEntity.ok("Чат удален");
     }
 
     @ApiOperation(value = "Получить все отслеживаемые ссылки")
@@ -55,6 +58,7 @@ public class ScrapperController {
     })
     @GetMapping("/links")
     public ListLinksResponse getAllTrackedLinks(@RequestHeader Long tgChatId) {
+        System.out.println(tgChatId);
         return scrapperService.getAllTrackedLinks(tgChatId);
     }
 
@@ -79,7 +83,7 @@ public class ScrapperController {
     @DeleteMapping("/links")
     public LinkResponse deleteTrackedLink(
             @RequestHeader Long tgChatId,
-            @RequestBody RemoveLinkRequest removeLinkRequest) {
+            @RequestHeader RemoveLinkRequest removeLinkRequest) {
         return scrapperService.deleteTrackedLink(tgChatId, removeLinkRequest);
     }
 
