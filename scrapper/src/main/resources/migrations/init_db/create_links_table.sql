@@ -1,3 +1,8 @@
+drop table if exists chat;
+drop table if exists link;
+drop sequence if exists chat_sequence;
+drop sequence if exists links_sequence;
+
 create sequence links_sequence start with 1 increment by 1;
 
 CREATE TABLE link
