@@ -12,8 +12,8 @@ import java.util.List;
 public class ScrapperRepository {
     HashMap<Long, List<URI>> repository = new HashMap<>();
 
-    public boolean add(Long id){
-        if (repository.containsKey(id)){
+    public boolean add(Long id) {
+        if (repository.containsKey(id)) {
             return false;
         } else {
             repository.put(id, new ArrayList<>());
@@ -23,7 +23,7 @@ public class ScrapperRepository {
 
     public boolean add(Long id, URI link) {
         if (repository.containsKey(id)) {
-            if (repository.get(id).contains(link)){
+            if (repository.get(id).contains(link)) {
                 return false;
             }
             List<URI> prevList = repository.get(id);
@@ -43,8 +43,8 @@ public class ScrapperRepository {
         return false;
     }
 
-    public boolean delete(Long id, URI link){
-        if (repository.get(id).contains(link)){
+    public boolean delete(Long id, URI link) {
+        if (repository.get(id).contains(link)) {
             repository.get(id).remove(link);
             return true;
         } else {

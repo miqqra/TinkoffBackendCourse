@@ -2,7 +2,6 @@ server:
   port: 8080
 
 app:
-  test: helloScrapper
   scheduler:
     interval: 10000
 
@@ -15,3 +14,20 @@ client:
     url:
       github: https://api.github.com/repos/
       stackoverflow: https://api.stackexchange.com/2.3/questions/
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/scrapper
+    username: scrapper
+    password: scrapper
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:changelog/master.xml
