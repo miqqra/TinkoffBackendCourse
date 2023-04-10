@@ -51,18 +51,6 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.swagger.parser.v3</groupId>
-            <artifactId>swagger-parser</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openapitools</groupId>-->
-<!--            <artifactId>jackson-databind-nullable</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openapitools</groupId>-->
-<!--            <artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -75,30 +63,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.openapitools</groupId>-->
-<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <generatorName>java</generatorName>-->
-<!--                            <inputSpec>bot/src/main/resources/api.yml</inputSpec>-->
-<!--                            <output>${project.build.directory}/generated/bot</output>-->
-<!--                            <apiPackage>ru.tinkoff.edu.java.bot.api</apiPackage>-->
-<!--                            <invokerPackage>ru.tinkoff.edu.java.bot</invokerPackage>-->
-<!--                            <modelPackage>ru.tinkoff.edu.model</modelPackage>-->
-<!--                            <generateSupportingFiles>true</generateSupportingFiles>-->
-<!--                            <configOptions>-->
-<!--                                <dateLibrary>java8</dateLibrary>-->
-<!--                                <interfaceOnly>true</interfaceOnly>-->
-<!--                            </configOptions>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 </project>
