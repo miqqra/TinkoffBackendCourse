@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 
 @Controller
 @RequiredArgsConstructor
-public final class StartCommand extends BotCommand {
+public final class StartCommand implements BotCommand {
     private final BotService botService;
     private final String command = "/start";
     private final String description = "Зарегистрировать пользователя";

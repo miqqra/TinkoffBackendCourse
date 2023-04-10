@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 
 @Controller
 @RequiredArgsConstructor
-public final class TrackCommand extends BotCommand {
+public final class TrackCommand implements BotCommand {
     private final BotService botService;
     private final String command = "/track";
     private final String description = "Начать отслеживание ссылки";

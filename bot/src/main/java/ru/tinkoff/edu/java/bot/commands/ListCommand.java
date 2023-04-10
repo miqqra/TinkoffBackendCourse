@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public final class ListCommand extends BotCommand {
+public final class ListCommand implements BotCommand {
     private final BotService botService;
     private final String command = "/list";
     private final String description = "Показать список отслеживаемых ссылок";

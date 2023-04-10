@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 
 @Controller
 @RequiredArgsConstructor
-public final class UntrackCommand extends BotCommand {
+public final class UntrackCommand implements BotCommand {
     private final BotService botService;
     private final String command = "/untrack";
     private final String description = "Прекратить отслеживание ссылки";
