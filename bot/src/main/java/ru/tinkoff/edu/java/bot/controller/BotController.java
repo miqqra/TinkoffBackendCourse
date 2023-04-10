@@ -1,8 +1,5 @@
 package ru.tinkoff.edu.java.bot.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +12,6 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 public class BotController {
     private final BotService botService;
 
-    @ApiOperation(value = "Отправить обновление")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Обновление обработано"),
-            @ApiResponse(code = 400, message = "Некорректные параметры запроса")
-    })
     @PostMapping(value = "/updates")
     public void sendUpdate(@RequestBody LinkUpdate sendUpdateRequest) {
         botService.sendUpdate(sendUpdateRequest);
