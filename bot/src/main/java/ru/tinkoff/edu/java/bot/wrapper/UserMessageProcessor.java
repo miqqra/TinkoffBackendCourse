@@ -24,7 +24,8 @@ public class UserMessageProcessor {
                 .findAny()
                 .orElse(null);
         if (correctCommand == null){
-            return new SendMessage(BotCommand.getUserId(update), "Некорректная команда");
+            BotCommand anyCommand = commands().get(0);
+            return new SendMessage(anyCommand.getUserId(update), "Некорректная команда");
         }
         return correctCommand.handle(update);
     }
@@ -32,7 +33,6 @@ public class UserMessageProcessor {
     public static String showAllCommands() {
         StringBuilder stringBuilder = new StringBuilder();
         commands
-                .stream()
                 .forEach(command -> stringBuilder
                         .append(command.getCommand())
                         .append(" - ")

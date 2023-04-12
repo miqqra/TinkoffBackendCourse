@@ -3,31 +3,18 @@ package ru.tinkoff.edu.java.bot.commands;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
-public sealed abstract class BotCommand permits
-        StartCommand,
-        HelpCommand,
-        TrackCommand,
-        UntrackCommand,
-        ListCommand {
-    private String command;
+public interface BotCommand {
 
-    private String description;
+    String getCommand();
+    String getDescription();
 
-    public String getCommand() {
-        return this.command;
-    }
+    SendMessage handle(Update update);
 
-    public String getDescription() {
-        return this.description;
-    }
-
-    public abstract SendMessage handle(Update update);
-
-    public boolean supports(Update update) {
+    default boolean supports(Update update) {
         return update.message().text().split(" ")[0].equals(getCommand());
     }
 
-    public String getArgument(Update update) {
+    default String getArgument(Update update) {
         String[] strings = update.message().text().split(" ");
         if (strings.length < 2) {
             return "";
@@ -36,7 +23,7 @@ public sealed abstract class BotCommand permits
         }
     }
 
-    public static Long getUserId(Update update){
+    default Long getUserId(Update update){
         return update.message().chat().id();
     }
 }

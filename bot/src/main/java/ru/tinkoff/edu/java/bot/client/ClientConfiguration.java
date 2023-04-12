@@ -13,17 +13,9 @@ public class ClientConfiguration {
     private static final String SCRAPPER_URL = "http://localhost:8080/";
 
     @Bean
-    public BotClient createBotClient() {
-        return new BotClient(createWebClient(SCRAPPER_URL));
-    }
-
-    public BotClient createBotClient(String newURL) {
-        return new BotClient(createWebClient(newURL));
-    }
-
-    private WebClient createWebClient(String baseURL) {
+    public WebClient createWebClient() {
         return WebClient.builder()
-                .baseUrl(baseURL)
+                .baseUrl(SCRAPPER_URL)
                 .build();
     }
 }

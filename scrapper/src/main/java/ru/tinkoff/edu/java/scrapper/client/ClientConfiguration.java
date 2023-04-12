@@ -11,10 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ClientConfiguration {
 
     @Value("${client.url.github}")
-    private static final String GITHUB_URL = "https://api.github.com/repos";
+    private static String GITHUB_URL = "https://api.github.com/repos";
 
-    @Value("${client.url.stackoverflow}")
-    private static final String STACKOVERFLOW_URL = "https://api.stackexchange.com/2.3/questions";
+    @Value(value = "${client.url.stackoverflow}")
+    private static String STACKOVERFLOW_URL = "https://api.stackexchange.com/2.3/questions";
 
     @Bean
     public GitHubClient createGitHubClient() {
@@ -24,14 +24,6 @@ public class ClientConfiguration {
     @Bean
     public StackOverflowClient createStackOverflowClient() {
         return new StackOverflowClient(createWebClient(STACKOVERFLOW_URL));
-    }
-
-    public GitHubClient createGitHubClient(String newURL) {
-        return new GitHubClient(createWebClient(newURL));
-    }
-
-    public StackOverflowClient createStackOverflowClient(String newURL) {
-        return new StackOverflowClient(createWebClient(newURL));
     }
 
     private WebClient createWebClient(String baseURL) {

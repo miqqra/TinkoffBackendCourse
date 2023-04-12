@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.bot.client;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,7 +13,9 @@ import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
 
 import java.net.URI;
 
-public record BotClient(WebClient webClient) {
+@RequiredArgsConstructor
+public class BotClient{
+    private final WebClient webClient;
 
     public String showCommandsList() {
         return UserMessageProcessor.showAllCommands();
