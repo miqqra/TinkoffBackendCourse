@@ -17,5 +17,5 @@ public class Chat {
 
     private Long tgChatId;
 
-    private List<Link> trackedLinksIds;
+    private List<Link> trackedLinksId;
 }

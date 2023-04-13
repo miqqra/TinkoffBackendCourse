@@ -1,11 +1,8 @@
-INSERT INTO chat(id, tgchatid, trackedlinks)
-    values (100, 200, Array[
-        (1, 'github.com')::link, (2, 'vk.com')::link]);
+INSERT INTO chat(id, tgchatid, trackedlink)
+    values (100, 200, 1);
 
-INSERT INTO chat(id, tgchatid, trackedlinks)
-    values (101, 200, Array[
-        (1, 'github.com')::link, (3, 'stackoverflow.com')::link]);
+INSERT INTO chat(id, tgchatid, trackedlink)
+    values (101, 200, 2);
 
-INSERT INTO chat(id, tgchatid, trackedlinks)
-    values (102, 200, Array[
-        (2, 'vk.com')::link, (4, 'mit.com')::link]);
+INSERT INTO chat(id, tgchatid, trackedlink)
+    values (102, 200, 3);

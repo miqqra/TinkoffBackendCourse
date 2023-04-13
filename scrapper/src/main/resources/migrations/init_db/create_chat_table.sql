@@ -4,7 +4,8 @@ CREATE TABLE chat
 (
     id              BIGINT      NOT NULL,
     tgChatId        BIGINT      NOT NULL,
-    trackedLinks    link[],
+    trackedLink     BIGINT      NOT NULL,
+    FOREIGN KEY (trackedLink) REFERENCES link(id),
 
     CONSTRAINT chat_pk PRIMARY KEY (id)
 );
