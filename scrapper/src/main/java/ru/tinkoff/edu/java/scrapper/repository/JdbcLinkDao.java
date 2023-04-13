@@ -3,54 +3,56 @@ package ru.tinkoff.edu.java.scrapper.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.DataClassRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class JdbcLinkDao {
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
     private final RowMapper<Link> rowMapper = new DataClassRowMapper<>(Link.class);
 
-    public Optional<Link> addLink(Link link) {
-        String query = "insert into link values(?, ?)";
-        return Optional.ofNullable(
-                DataAccessUtils.singleResult(
-                        jdbcTemplate.query(
-                                query,
-                                rowMapper,
-                                link.getId(), link.getUrl()
-                        )
-                )
-        );
+    public Link addLink(Link link) {
+        String query = "INSERT INTO link(id, url) VALUES(:id, :url) returning *";
+        return jdbcTemplate.queryForObject(
+                query,
+                Map.of("id", link.getId(), "url", link.getUrl()),
+                rowMapper);
     }
 
-    public List<Link> findAllLinks() {
-        String query = "select * from link";
+    public Iterable<Link> findAllLinks() {
+        String query = "select * from scrapper.public.link;";
         return jdbcTemplate.query(query, rowMapper);
     }
 
     public Optional<Link> findLinkById(Long id) {
-        String query = "select * from link where id=?";
+        String query = "SELECT * FROM link WHERE id=:id;";
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
-                        jdbcTemplate.query(query, rowMapper, id)
+                        jdbcTemplate.query(query, Map.of("id", id), rowMapper)
+                )
+        );
+    }
+
+    public Optional<Link> findLinkByUrl(String url) {
+        String query = "SELECT * FROM link WHERE url=:url;";
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(query, Map.of("url", url), rowMapper)
                 )
         );
     }
 
     public Optional<Link> removeLinkById(Long id) {
-        String query = "delete from link where id=?";
+        String query = "delete FROM link WHERE id=:id returning *;";
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
-                        jdbcTemplate.query(
-                                query, rowMapper, id
-                        )
+                        jdbcTemplate.query(query, Map.of("id", id), rowMapper)
                 )
         );
     }

@@ -9,5 +9,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="init_db/changelog.xml" relativeToChangelogFile="true"/>
-    <include file="fill_test_data/changelog.xml" relativeToChangelogFile="true"/>
+
+<!--    <include file="fill_test_data/changelog.xml" relativeToChangelogFile="true"/>-->
 </databaseChangeLog>
