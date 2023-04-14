@@ -8,14 +8,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Chat {
     @Id
     @SequenceGenerator(
@@ -34,7 +33,16 @@ public class Chat {
     @OneToMany
     private List<Link> trackedLinksId;
 
-    public boolean addTrackedLink(Link link){
+    public Chat() {
+        trackedLinksId = new ArrayList<>();
+    }
+
+    public Chat(Long tgChatId, List<Link> trackedLinksId) {
+        this.tgChatId = tgChatId;
+        this.trackedLinksId = trackedLinksId;
+    }
+
+    public boolean addTrackedLink(Link link) {
         return trackedLinksId.add(link);
     }
 }

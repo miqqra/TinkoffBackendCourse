@@ -27,4 +27,8 @@ public class Link {
     private Long id;
 
     private String url;
+
+    public Link(String url) {
+        this.url = url;
+    }
 }

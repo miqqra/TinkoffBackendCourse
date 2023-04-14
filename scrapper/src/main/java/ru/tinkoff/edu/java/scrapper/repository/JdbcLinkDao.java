@@ -18,15 +18,18 @@ public class JdbcLinkDao {
     private final RowMapper<Link> rowMapper = new DataClassRowMapper<>(Link.class);
 
     public Link addLink(Link link) {
-        String query = "INSERT INTO link(id, url) VALUES(:id, :url) returning *";
+        Optional<Link> optionalLink = this.findLinkByUrl(link.getUrl());
+        if (optionalLink.isPresent()) return optionalLink.get();
+
+        String query = "INSERT INTO link(url) VALUES(:url) returning *";
         return jdbcTemplate.queryForObject(
                 query,
-                Map.of("id", link.getId(), "url", link.getUrl()),
+                Map.of("url", link.getUrl()),
                 rowMapper);
     }
 
     public Iterable<Link> findAllLinks() {
-        String query = "select * from scrapper.public.link;";
+        String query = "select * from link;";
         return jdbcTemplate.query(query, rowMapper);
     }
 
@@ -53,6 +56,15 @@ public class JdbcLinkDao {
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
                         jdbcTemplate.query(query, Map.of("id", id), rowMapper)
+                )
+        );
+    }
+
+    public Optional<Link> removeLinkByUrl(String url) {
+        String query = "delete FROM link WHERE url=:url returning *;";
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(query, Map.of("url", url), rowMapper)
                 )
         );
     }

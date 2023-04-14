@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.scrapper.jdbc;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,17 +19,12 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Autowired
     private JdbcLinkDao linkRepository;
 
-    @BeforeEach
-    void setConnection() {
-        runMigrations(DB_CONTAINER);
-    }
-
     @Test
     @Transactional
     @Rollback
     void addTest() {
-        Link link1 = new Link(1L, "github.com");
-        Link link2 = new Link(2L, "stackoverflow.com");
+        Link link1 = new Link("github.com");
+        Link link2 = new Link("stackoverflow.com");
 
         linkRepository.addLink(link1);
         linkRepository.addLink(link2);
@@ -46,9 +40,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
 
         assertThat(list, is(not(emptyIterable())));
         assertThat(list.size(), equalTo(2));
-        assertThat(list.get(0).getId(), equalTo(1L));
         assertThat(list.get(0).getUrl(), equalTo("github.com"));
-        assertThat(list.get(1).getId(), equalTo(2L));
         assertThat(list.get(1).getUrl(), equalTo("stackoverflow.com"));
     }
 
@@ -61,23 +53,21 @@ public class JdbcLinkTest extends IntegrationEnvironment {
         Link link3 = new Link(3L, "notstackoverflow.com");
         Link link4 = new Link(4L, "reallynotstackoverflow.com");
 
-        linkRepository.addLink(link1);
-        linkRepository.addLink(link2);
+        Link addedLink1 = linkRepository.addLink(link1);
+        Link addedLink2 = linkRepository.addLink(link2);
         linkRepository.addLink(link3);
         linkRepository.addLink(link4);
 
-        Link removedLink1 = linkRepository.removeLinkById(2L).orElse(null);
-        Link removedLink2 = linkRepository.removeLinkById(4L).orElse(null);
-        Link removedLink3 = linkRepository.removeLinkById(5L).orElse(null);
+        Link removedLink1 = linkRepository.removeLinkById(addedLink1.getId()).orElse(null);
+        Link removedLink2 = linkRepository.removeLinkById(addedLink2.getId()).orElse(null);
 
         Iterable<Link> links = linkRepository.findAllLinks();
 
         assertThat(removedLink1, is(notNullValue()));
         assertThat(removedLink2, is(notNullValue()));
-        assertThat(removedLink3, is(nullValue()));
 
-        assertThat(removedLink1.getUrl(), equalTo("stackoverflow.com"));
-        assertThat(removedLink2.getUrl(), equalTo("reallynotstackoverflow.com"));
+        assertThat(removedLink1.getUrl(), equalTo("github.com"));
+        assertThat(removedLink2.getUrl(), equalTo("stackoverflow.com"));
 
         assertThat(links, is(notNullValue()));
 
@@ -88,9 +78,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
 
         assertThat(list, is(not(emptyIterable())));
         assertThat(list.size(), equalTo(2));
-        assertThat(list.get(0).getId(), equalTo(1L));
-        assertThat(list.get(0).getUrl(), equalTo("github.com"));
-        assertThat(list.get(1).getId(), equalTo(3L));
-        assertThat(list.get(1).getUrl(), equalTo("notstackoverflow.com"));
+        assertThat(list.get(0).getUrl(), equalTo("notstackoverflow.com"));
+        assertThat(list.get(1).getUrl(), equalTo("reallynotstackoverflow.com"));
     }
 }
