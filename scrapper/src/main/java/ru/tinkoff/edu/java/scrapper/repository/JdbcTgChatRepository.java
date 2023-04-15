@@ -23,12 +23,39 @@ public class JdbcTgChatRepository {
             new DataClassRowMapper<>(FindChatResponse.class);
     private final JdbcLinkDao jdbcLinkDao;
 
+    public Long addChat(Long tgChatId) {
+        String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
+        jdbcTemplate.query(
+                query,
+                Map.of("tgchatid", tgChatId, "trackedlink", null),
+                rowMapper
+        );
+        return tgChatId;
+    }
+
     public Long addChat(Chat chat) {
         String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
         Optional<Chat> optionalChat = findChatByTgChatId(chat.getTgChatId());
         return optionalChat
                 .map(value -> addToExistingChat(value, chat, query))
                 .orElseGet(() -> addToNewChat(chat, query));
+    }
+
+    public Link addLinkToChat(Long tgChatId, String url) {
+        String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
+        Optional<Link> optionalLink = jdbcLinkDao.findLinkByUrl(url);
+        if (optionalLink.isPresent()) {
+            jdbcTemplate.query(query,
+                    Map.of("tgchatid", tgChatId, "trackedlink", optionalLink.get().getId()),
+                    rowMapper);
+            return optionalLink.get();
+        } else {
+            Link createdLink = jdbcLinkDao.addLink(new Link(url));
+            jdbcTemplate.query(query,
+                    Map.of("tgchatid", tgChatId, "trackedlink", createdLink.getId()),
+                    rowMapper);
+            return createdLink;
+        }
     }
 
     public List<Chat> findAllChats() {
@@ -57,6 +84,18 @@ public class JdbcTgChatRepository {
         return chat.isPresent() ? Optional.of(tgChatId) : Optional.empty();
     }
 
+    public Optional<Link> removeChatByUrl(Long tgChatId, String url) {
+        Link link = jdbcLinkDao.findLinkByUrl(url).get();
+        Chat chat = findChatByTgChatId(tgChatId).get();
+        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl() == url)) return Optional.empty();
+        String query = "delete from chat where tgchatid = :tgchatid and " +
+                "trackedlink = :trackedlink returning trackedlink";
+        jdbcTemplate.query(query,
+                Map.of("tgchatid", tgChatId, "trackedlink", link.getId()),
+                rowMapper);
+        return Optional.of(link);
+    }
+
     private Long addToExistingChat(Chat existingChat, Chat newChat, String query) {
         newChat.getTrackedLinksId().forEach(link -> {
             if (!existingChat.getTrackedLinksId().contains(link)) {
@@ -74,7 +113,11 @@ public class JdbcTgChatRepository {
 
     private Long addToNewChat(Chat newChat, String query) {
         if (newChat.getTrackedLinksId().isEmpty()) {
-            return null;
+            jdbcTemplate.query(
+                    query,
+                    Map.of("tgchatid", newChat.getTgChatId(), "trackedlink", null),
+                    rowMapper
+            );
         } else {
             newChat.getTrackedLinksId().forEach(link -> {
                 Link createdLink = jdbcLinkDao.addLink(link);

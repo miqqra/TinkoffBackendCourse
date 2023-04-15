@@ -33,6 +33,11 @@ public class JdbcLinkDao {
         return jdbcTemplate.query(query, rowMapper);
     }
 
+    public Iterable<Link> findAllLinksById(Long tgChatId){
+        String query = "select link.id, url from link, chat where tgchatid = :tgchatid and trackedlink = link.id";
+        return jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), rowMapper);
+    }
+
     public Optional<Link> findLinkById(Long id) {
         String query = "SELECT * FROM link WHERE id=:id;";
         return Optional.ofNullable(

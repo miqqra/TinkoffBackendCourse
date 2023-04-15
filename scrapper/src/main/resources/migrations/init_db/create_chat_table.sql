@@ -4,7 +4,7 @@ CREATE TABLE chat
 (
     id              BIGINT      DEFAULT nextval('chat_sequence'),
     tgChatId        BIGINT      NOT NULL,
-    trackedLink     BIGINT      NOT NULL,
+    trackedLink     BIGINT,
     FOREIGN KEY (trackedLink) REFERENCES link(id),
 
     CONSTRAINT chat_pk PRIMARY KEY (id)

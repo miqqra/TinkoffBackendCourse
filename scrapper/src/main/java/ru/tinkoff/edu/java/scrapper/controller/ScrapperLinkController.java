@@ -11,30 +11,30 @@ import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.scrapper.service.ScrapperService;
+import ru.tinkoff.edu.java.scrapper.service.LinkService;
 
 @RestController
 @RequiredArgsConstructor
 public class ScrapperLinkController {
-    private final ScrapperService scrapperService;
+    private final LinkService linkService;
 
     @GetMapping("/links")
     public ListLinksResponse getAllTrackedLinks(@RequestHeader Long tgChatId) {
-        return scrapperService.getAllTrackedLinks(tgChatId);
+        return linkService.listAll(tgChatId);
     }
 
     @PostMapping("/links")
     public LinkResponse addTrackedLink(
             @RequestBody AddLinkRequest addLinkRequest,
             @RequestHeader Long tgChatId) {
-        return scrapperService.addTrackedLink(addLinkRequest, tgChatId);
+        return linkService.add(tgChatId, addLinkRequest);
     }
 
     @DeleteMapping("/links")
     public LinkResponse deleteTrackedLink(
             @RequestHeader Long tgChatId,
             @RequestBody RemoveLinkRequest removeLinkRequest) {
-        return scrapperService.deleteTrackedLink(tgChatId, removeLinkRequest);
+        return linkService.remove(tgChatId, removeLinkRequest);
     }
 
 }
