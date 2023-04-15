@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ public class JdbcLinkDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final RowMapper<Link> rowMapper = new DataClassRowMapper<>(Link.class);
 
+    @Transactional
     public Link addLink(Link link) {
         Optional<Link> optionalLink = this.findLinkByUrl(link.getUrl());
         if (optionalLink.isPresent()) return optionalLink.get();
@@ -33,7 +35,7 @@ public class JdbcLinkDao {
         return jdbcTemplate.query(query, rowMapper);
     }
 
-    public Iterable<Link> findAllLinksById(Long tgChatId){
+    public Iterable<Link> findAllLinksById(Long tgChatId) {
         String query = "select link.id, url from link, chat where tgchatid = :tgchatid and trackedlink = link.id";
         return jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), rowMapper);
     }
@@ -56,6 +58,7 @@ public class JdbcLinkDao {
         );
     }
 
+    @Transactional
     public Optional<Link> removeLinkById(Long id) {
         String query = "delete FROM link WHERE id=:id returning *;";
         return Optional.ofNullable(
@@ -65,6 +68,7 @@ public class JdbcLinkDao {
         );
     }
 
+    @Transactional
     public Optional<Link> removeLinkByUrl(String url) {
         String query = "delete FROM link WHERE url=:url returning *;";
         return Optional.ofNullable(

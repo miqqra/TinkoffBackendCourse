@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
 import ru.tinkoff.edu.java.scrapper.repository.dto.FindChatResponse;
@@ -23,6 +24,7 @@ public class JdbcTgChatRepository {
             new DataClassRowMapper<>(FindChatResponse.class);
     private final JdbcLinkDao jdbcLinkDao;
 
+    @Transactional
     public Long addChat(Long tgChatId) {
         String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
         jdbcTemplate.query(
@@ -33,6 +35,7 @@ public class JdbcTgChatRepository {
         return tgChatId;
     }
 
+    @Transactional
     public Long addChat(Chat chat) {
         String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
         Optional<Chat> optionalChat = findChatByTgChatId(chat.getTgChatId());
@@ -41,6 +44,7 @@ public class JdbcTgChatRepository {
                 .orElseGet(() -> addToNewChat(chat, query));
     }
 
+    @Transactional
     public Link addLinkToChat(Long tgChatId, String url) {
         String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
         Optional<Link> optionalLink = jdbcLinkDao.findLinkByUrl(url);
@@ -78,6 +82,7 @@ public class JdbcTgChatRepository {
         );
     }
 
+    @Transactional
     public Optional<Long> removeChatByTgChatId(Long tgChatId) {
         String query = "delete from chat where tgchatid = :tgchatid returning *";
         Optional<Chat> chat = findChatByTgChatId(tgChatId);
@@ -85,10 +90,12 @@ public class JdbcTgChatRepository {
         return chat.isPresent() ? Optional.of(tgChatId) : Optional.empty();
     }
 
+    @Transactional
     public Optional<Link> removeChatByUrl(Long tgChatId, String url) {
         Link link = jdbcLinkDao.findLinkByUrl(url).get();
         Chat chat = findChatByTgChatId(tgChatId).get();
-        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl().equals(url))) return Optional.empty();
+        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl().equals(url)))
+            return Optional.empty();
         String query = "delete from chat where tgchatid = :tgchatid and " +
                 "trackedlink = :trackedlink returning trackedlink";
         jdbcTemplate.query(query,
