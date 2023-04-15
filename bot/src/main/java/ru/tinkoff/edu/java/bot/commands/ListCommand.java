@@ -3,13 +3,13 @@ package ru.tinkoff.edu.java.bot.commands;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.service.BotService;
 
 import java.util.List;
 
-@Controller
+@Component
 @RequiredArgsConstructor
 public final class ListCommand implements BotCommand {
     private final BotService botService;
@@ -37,7 +37,7 @@ public final class ListCommand implements BotCommand {
         );
     }
 
-    private String prettyPrint(List<LinkResponse> linkResponses){
+    private String prettyPrint(List<LinkResponse> linkResponses) {
         StringBuilder stringBuilder = new StringBuilder();
         linkResponses
                 .forEach(linkResponse -> stringBuilder.append(linkResponse.url()).append("\n"));

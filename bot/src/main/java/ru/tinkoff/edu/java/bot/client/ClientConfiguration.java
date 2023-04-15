@@ -13,9 +13,13 @@ public class ClientConfiguration {
     private static final String SCRAPPER_URL = "http://localhost:8080/";
 
     @Bean
-    public WebClient createWebClient() {
+    public BotClient createGitHubClient() {
+        return new BotClient(createWebClient(SCRAPPER_URL));
+    }
+
+    private WebClient createWebClient(String baseUrl) {
         return WebClient.builder()
-                .baseUrl(SCRAPPER_URL)
+                .baseUrl(baseUrl)
                 .build();
     }
 }

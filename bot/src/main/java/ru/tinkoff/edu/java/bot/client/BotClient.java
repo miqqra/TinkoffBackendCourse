@@ -14,7 +14,7 @@ import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
 import java.net.URI;
 
 @RequiredArgsConstructor
-public class BotClient{
+public class BotClient {
     private final WebClient webClient;
 
     public String showCommandsList() {
