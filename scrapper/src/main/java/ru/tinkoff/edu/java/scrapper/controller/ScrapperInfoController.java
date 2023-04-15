@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
-import ru.tinkoff.edu.java.scrapper.service.LinkUpdater;
+import ru.tinkoff.edu.java.scrapper.service.impl.JdbcLinkUpdater;
 
 @RestController
 @RequiredArgsConstructor
 public class ScrapperInfoController {
-    private final LinkUpdater linkUpdater;
+    private final JdbcLinkUpdater linkUpdater;
 
     @GetMapping(value = "/stackoverflow/api")
     public GetStackOverflowInfoResponse getStackOverflowInfo(

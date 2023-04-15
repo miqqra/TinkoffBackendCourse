@@ -59,7 +59,8 @@ public class JdbcTgChatRepository {
     }
 
     public List<Chat> findAllChats() {
-        String query = "select chat.id, tgchatid, trackedlink, url from chat, link where trackedlink = link.id";
+        String query = "select chat.id, tgchatid, trackedlink, url from chat, link where trackedlink = link.id " +
+                "union select chat.id, tgchatid, trackedlink, null from chat, link where trackedlink is null";
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of(), findChatResponseDataClassRowMapper);
         return FindChatResponse.mapToChat(findAllChatsResponses);
@@ -87,7 +88,7 @@ public class JdbcTgChatRepository {
     public Optional<Link> removeChatByUrl(Long tgChatId, String url) {
         Link link = jdbcLinkDao.findLinkByUrl(url).get();
         Chat chat = findChatByTgChatId(tgChatId).get();
-        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl() == url)) return Optional.empty();
+        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl().equals(url))) return Optional.empty();
         String query = "delete from chat where tgchatid = :tgchatid and " +
                 "trackedlink = :trackedlink returning trackedlink";
         jdbcTemplate.query(query,
@@ -113,9 +114,10 @@ public class JdbcTgChatRepository {
 
     private Long addToNewChat(Chat newChat, String query) {
         if (newChat.getTrackedLinksId().isEmpty()) {
+            String queryWithoutTrackedLink = "insert into chat(tgchatid) values(:tgchatid) returning *";
             jdbcTemplate.query(
-                    query,
-                    Map.of("tgchatid", newChat.getTgChatId(), "trackedlink", null),
+                    queryWithoutTrackedLink,
+                    Map.of("tgchatid", newChat.getTgChatId()),
                     rowMapper
             );
         } else {

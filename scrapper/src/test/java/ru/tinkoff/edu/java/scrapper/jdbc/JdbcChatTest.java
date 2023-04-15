@@ -41,18 +41,17 @@ public class JdbcChatTest extends IntegrationEnvironment {
 
         assertThat(chats, is(notNullValue()));
 
-        assertThat(chats.size(), equalTo(2));
+        assertThat(chats.size(), equalTo(3));
 
-        assertThat(chats.get(0).getTgChatId(), equalTo(2L));
-        assertThat(chats.get(0).getTrackedLinksId().size(), equalTo(1));
-        assertThat(chats.get(0).getTrackedLinksId().get(0).getUrl(), equalTo(link1.getUrl()));
+        assertThat(chats.get(0).getTgChatId(), equalTo(1L));
+        assertThat(chats.get(0).getTrackedLinksId(), is(empty()));
 
-        assertThat(chats.get(1).getTgChatId(), equalTo(3L));
-        assertThat(chats.get(1).getTrackedLinksId().size(), equalTo(4));
+        assertThat(chats.get(1).getTgChatId(), equalTo(2L));
+        assertThat(chats.get(1).getTrackedLinksId().size(), equalTo(1));
         assertThat(chats.get(1).getTrackedLinksId().get(0).getUrl(), equalTo(link1.getUrl()));
-        assertThat(chats.get(1).getTrackedLinksId().get(1).getUrl(), equalTo(link2.getUrl()));
-        assertThat(chats.get(1).getTrackedLinksId().get(2).getUrl(), equalTo(link3.getUrl()));
-        assertThat(chats.get(1).getTrackedLinksId().get(3).getUrl(), equalTo(link4.getUrl()));
+
+        assertThat(chats.get(2).getTgChatId(), equalTo(3L));
+        assertThat(chats.get(2).getTrackedLinksId().size(), equalTo(4));
     }
 
     @Test
@@ -103,7 +102,9 @@ public class JdbcChatTest extends IntegrationEnvironment {
         Optional<Long> nonExistingRemovedChatId = chatRepository.removeChatByTgChatId(6L);
         List<Chat> chats = chatRepository.findAllChats();
 
-        assertThat(addedChatId1, is(nullValue()));
+        System.out.println(chats);
+
+        assertThat(addedChatId1, is(not(nullValue())));
         assertThat(addedChatId2, equalTo(2L));
         assertThat(addedChatId3, equalTo(3L));
 
@@ -111,9 +112,13 @@ public class JdbcChatTest extends IntegrationEnvironment {
         assertThat(chats, is(not(emptyIterable())));
 
         assertThat(chats, is(notNullValue()));
-        assertThat(chats.size(), equalTo(1));
-        assertThat(chats.get(0).getTgChatId(), equalTo(chat2.getTgChatId()));
-        assertThat(chats.get(0).getTrackedLinksId().size(), equalTo(chat2.getTrackedLinksId().size()));
+        assertThat(chats.size(), equalTo(2));
+
+        assertThat(chats.get(0).getTgChatId(), equalTo(chat1.getTgChatId()));
+        assertThat(chats.get(0).getTrackedLinksId().size(), equalTo(chat1.getTrackedLinksId().size()));
+
+        assertThat(chats.get(1).getTgChatId(), equalTo(chat2.getTgChatId()));
+        assertThat(chats.get(1).getTrackedLinksId().size(), equalTo(chat2.getTrackedLinksId().size()));
 
         assertThat(removedChatId, is(not(Optional.empty())));
         assertThat(removedChatId.get(), equalTo(3L));

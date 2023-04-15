@@ -23,15 +23,20 @@ public class FindChatResponse {
         Long tgChatId;
         for (FindChatResponse findAllChatsResponse : list) {
             tgChatId = findAllChatsResponse.getTgChatId();
-            if (chats.containsKey(tgChatId)) {
+            if (chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink()!=null) {
                 chats.get(tgChatId).addTrackedLink(
                         new Link(findAllChatsResponse.getTrackedLink(), findAllChatsResponse.getUrl())
                 );
-            } else {
+            } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink()!=null){
                 Chat newChat = new Chat();
                 newChat.setId(findAllChatsResponse.getId());
                 newChat.setTgChatId(tgChatId);
                 newChat.addTrackedLink(new Link(findAllChatsResponse.getTrackedLink(), findAllChatsResponse.getUrl()));
+                chats.put(tgChatId, newChat);
+            } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() == null){
+                Chat newChat = new Chat();
+                newChat.setId(findAllChatsResponse.getId());
+                newChat.setTgChatId(tgChatId);
                 chats.put(tgChatId, newChat);
             }
         }

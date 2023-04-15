@@ -10,21 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListLinkResponseLinkMapper {
-    public ListLinksResponse linksToListLinksResponse(Iterable<Link> links) {
+    public static ListLinksResponse linksToListLinksResponse(List<Link> links) {
         List<LinkResponse> linkArrayList = new ArrayList<>();
         try {
             for (Link link : links) {
                 linkArrayList.add(new LinkResponse(link.getId(), new URI(link.getUrl())));
             }
-        } catch (URISyntaxException ignored){
+        } catch (URISyntaxException ignored) {
         }
         return new ListLinksResponse(linkArrayList, linkArrayList.size());
     }
 
-    public LinkResponse LinkToLinkResponse(Link link){
+    public static LinkResponse LinkToLinkResponse(Link link) {
         try {
             return new LinkResponse(link.getId(), new URI(link.getUrl()));
-        } catch (URISyntaxException ignored){
+        } catch (URISyntaxException ignored) {
         }
         return null;
     }
