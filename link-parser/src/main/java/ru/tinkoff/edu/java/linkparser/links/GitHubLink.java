@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.linkparser.links;
 import ru.tinkoff.edu.java.linkparser.parseResult.GitHubParseResult;
 import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +16,7 @@ public final class GitHubLink extends Link {
     }
 
     @Override
-    public ParseResult matches(URL url) {
+    public ParseResult matches(URI url) {
         Matcher matcher = PATTERN.matcher(url.toString());
         if (matcher.matches()) {
             return new GitHubParseResult(matcher.group(1), matcher.group(2));
