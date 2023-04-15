@@ -6,23 +6,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
-import ru.tinkoff.edu.java.scrapper.service.impl.JdbcLinkUpdater;
+import ru.tinkoff.edu.java.scrapper.service.impl.ClientService;
 
 @RestController
 @RequiredArgsConstructor
 public class ScrapperInfoController {
-    private final JdbcLinkUpdater linkUpdater;
+    private final ClientService clientService;
 
     @GetMapping(value = "/stackoverflow/api")
     public GetStackOverflowInfoResponse getStackOverflowInfo(
             @RequestParam Long id) {
-        return linkUpdater
+        return clientService
                 .getStackOverflowInfo(id);
     }
 
     @GetMapping("/github/api")
     public GetGitHubInfoResponse getGitHubInfo(
             @RequestParam String username, @RequestParam String repo) {
-        return linkUpdater.getGitHubInfo(username, repo);
+        return clientService.getGitHubInfo(username, repo);
     }
 }

@@ -12,8 +12,9 @@ springdoc:
 
 client:
     url:
-      github: https://api.github.com/repos/
-      stackoverflow: https://api.stackexchange.com/2.3/questions/
+      github: https://api.github.com/repos
+      stackoverflow: https://api.stackexchange.com/2.3/questions
+      bot: http://localhost:8081
 
 spring:
   sql:
