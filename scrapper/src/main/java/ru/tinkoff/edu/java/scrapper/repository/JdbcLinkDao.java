@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
 
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,7 +37,8 @@ public class JdbcLinkDao {
     }
 
     public Iterable<Link> findAllLinksById(Long tgChatId) {
-        String query = "select link.id, url from link, chat where tgchatid = :tgchatid and trackedlink = link.id";
+        String query = "select link.id, url, last_updated, last_checked, last_checked_when_was_updated " +
+                "from link, chat where tgchatid = :tgchatid and trackedlink = link.id";
         return jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), rowMapper);
     }
 
@@ -76,5 +78,17 @@ public class JdbcLinkDao {
                         jdbcTemplate.query(query, Map.of("url", url), rowMapper)
                 )
         );
+    }
+
+    public void updateLastCheckDate(String url, OffsetDateTime lastCheckDate) {
+        String query = "UPDATE link SET last_checked=:lastcheckdate WHERE url=:url; ";
+        jdbcTemplate.update(query, Map.of("lastcheckdate", lastCheckDate, "url", url));
+    }
+
+    public void updateLastActivityDate(String url, OffsetDateTime lastActivityDate, OffsetDateTime lastCheckDate) {
+        String query = "UPDATE link SET last_updated=:lastactivitydate, last_checked_when_was_updated=:lastcheckdate " +
+                "WHERE url=:url; ";
+        jdbcTemplate.update(query,
+                Map.of("lastactivitydate", lastActivityDate, "lastcheckdate", lastCheckDate, "url", url));
     }
 }

@@ -128,6 +128,7 @@
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <release>17</release>
+                        <compilerArgs>--enable-preview</compilerArgs>
                         <parameters>true</parameters>
                     </configuration>
                 </plugin>

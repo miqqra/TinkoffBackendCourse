@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
-import ru.tinkoff.edu.java.scrapper.repository.dto.FindChatResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.FindChatResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -63,16 +63,18 @@ public class JdbcTgChatRepository {
     }
 
     public List<Chat> findAllChats() {
-        String query = "select chat.id, tgchatid, trackedlink, url from chat, link where trackedlink = link.id " +
-                "union select chat.id, tgchatid, trackedlink, null from chat, link where trackedlink is null";
+        String query = "select chat.id, tgchatid, trackedlink, url, last_updated, last_checked, last_checked_when_was_updated" +
+                " from chat, link where trackedlink = link.id " +
+                "union select chat.id, tgchatid, trackedlink, null, null, null, null from chat, link " +
+                "where trackedlink is null";
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of(), findChatResponseDataClassRowMapper);
         return FindChatResponse.mapToChat(findAllChatsResponses);
     }
 
     public Optional<Chat> findChatByTgChatId(Long tgChatId) {
-        String query = "select chat.id, tgchatid, trackedlink, url from chat, link " +
-                "where tgchatid = :tgchatid and trackedlink = link.id";
+        String query = "select chat.id, tgchatid, trackedlink, url, last_updated, last_checked, last_checked_when_was_updated " +
+                "from chat, link where tgchatid = :tgchatid and trackedlink = link.id";
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), findChatResponseDataClassRowMapper);
         return Optional.ofNullable(

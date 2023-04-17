@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -27,8 +29,18 @@ public class Link {
     private Long id;
 
     private String url;
+    private OffsetDateTime lastUpdated;
+    private OffsetDateTime lastChecked;
+    private OffsetDateTime lastCheckedWhenWasUpdated;
 
     public Link(String url) {
         this.url = url;
+    }
+
+    public Link(String url, OffsetDateTime lastUpdated, OffsetDateTime lastChecked, OffsetDateTime lastCheckedWhenWasUpdated) {
+        this.url = url;
+        this.lastUpdated = lastUpdated;
+        this.lastChecked = lastChecked;
+        this.lastCheckedWhenWasUpdated = lastCheckedWhenWasUpdated;
     }
 }
