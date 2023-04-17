@@ -2,7 +2,7 @@ server:
   port: 8081
 
 app:
-  token: newtoken
+  token: helloBot
 
 springdoc:
   swagger-ui:
