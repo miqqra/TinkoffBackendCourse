@@ -63,20 +63,20 @@ public class JdbcLinkUpdater implements LinkUpdater {
                 throw new RuntimeException(e);
             }
 
-            if (!Duration
+            if (link.getLastChecked() == null || !Duration
                     .between(updateTime, link.getLastChecked())
                     .minus(Duration.ofMillis(checkTime))
-                    .isNegative()){
+                    .isNegative()) {
                 counter.addAndGet(checkLinkForUpdate(link, chat, updateTime, linkUrl));
             }
         }));
         return counter.get();
     }
 
-    private int checkLinkForUpdate(Link link, Chat chat, OffsetDateTime updateTime, URI linkUrl){
+    private int checkLinkForUpdate(Link link, Chat chat, OffsetDateTime updateTime, URI linkUrl) {
         int counter = 0;
         //link was checked in this session of updates
-        if (Duration.between(updateTime, link.getLastChecked()).isZero()) {
+        if (link.getLastChecked() != null && Duration.between(updateTime, link.getLastChecked()).isZero()) {
             //link was updated in this session
             if (link.getLastCheckedWhenWasUpdated().equals(link.getLastChecked())) {
                 sendUpdatesToBot(chat, linkUrl);
@@ -111,6 +111,11 @@ public class JdbcLinkUpdater implements LinkUpdater {
 
     private boolean checkForUpdateTimeNewness(OffsetDateTime lastUpdate, OffsetDateTime updateTime,
                                               Link link, Chat chat, URI linkUrl) {
+        if (link.getLastUpdated() == null) {
+            jdbcLinkDao.updateLastActivityDate(link.getUrl(), lastUpdate, updateTime);
+            sendFirstUpdateToBot(chat, linkUrl);
+            return true;
+        }
         if (lastUpdate != link.getLastUpdated()) {
             jdbcLinkDao.updateLastActivityDate(link.getUrl(), lastUpdate, updateTime);
             sendUpdatesToBot(chat, linkUrl);
@@ -125,8 +130,16 @@ public class JdbcLinkUpdater implements LinkUpdater {
         clientService.sendUpdateToBot(
                 chat.getTgChatId(),
                 url,
-                "Сhanges with link: " + url,
+                "There are some changes with link: " + url,
                 List.of(chat.getTgChatId()));
+    }
 
+    private void sendFirstUpdateToBot(Chat chat, URI url) {
+        clientService.sendUpdateToBot(
+                chat.getTgChatId(),
+                url,
+                "Got last change from link: " + url,
+                List.of(chat.getTgChatId())
+        );
     }
 }
