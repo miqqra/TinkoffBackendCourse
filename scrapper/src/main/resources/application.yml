@@ -3,7 +3,8 @@ server:
 
 app:
   scheduler:
-    interval: 10000
+    interval: 10000 #10sec
+    check: 300000 #5min
 
 springdoc:
   swagger-ui:

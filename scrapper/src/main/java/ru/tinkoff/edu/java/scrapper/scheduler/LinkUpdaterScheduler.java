@@ -12,6 +12,6 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{@schedulerIntervalMs}")
     public void update() {
-        linkUpdater.update();
+        linkUpdater.updateUncheckedLinks();
     }
 }

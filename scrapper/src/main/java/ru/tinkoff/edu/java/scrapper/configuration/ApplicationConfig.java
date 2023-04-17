@@ -13,4 +13,9 @@ public record ApplicationConfig(@NotNull Scheduler scheduler) {
     public long schedulerIntervalMs(ApplicationConfig config) {
         return config.scheduler().interval().toMillis();
     }
+
+    @Bean
+    public long schedulerCheckMs(ApplicationConfig config){
+        return config.scheduler().check().toMillis();
+    }
 }

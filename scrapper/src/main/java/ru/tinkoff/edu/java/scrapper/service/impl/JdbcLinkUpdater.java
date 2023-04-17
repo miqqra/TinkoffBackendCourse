@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.linkparser.LinkParser;
 import ru.tinkoff.edu.java.linkparser.parseResult.GitHubParseResult;
@@ -25,11 +26,13 @@ public class JdbcLinkUpdater implements LinkUpdater {
     private final JdbcTgChatRepository jdbcTgChatRepository;
     private final JdbcLinkDao jdbcLinkDao;
     private final ClientService clientService;
+    @Value("#{@schedulerCheckMs}")
+    private Long checkTime;
+    private LinkParser linkParser = new LinkParser();
 
     @Override
-    public int update() {
+    public int updateAll() {
         AtomicInteger counter = new AtomicInteger();
-        LinkParser linkParser = new LinkParser();
         List<Chat> chatList = jdbcTgChatRepository.findAllChats();
         OffsetDateTime updateTime = OffsetDateTime.now();
 
@@ -41,39 +44,69 @@ public class JdbcLinkUpdater implements LinkUpdater {
                 throw new RuntimeException(e);
             }
 
-            //link was checked in this session of updates
-            if (Duration.between(updateTime, link.getLastChecked()).isZero()) {
-                //link was updated in this session
-                if (link.getLastCheckedWhenWasUpdated().equals(link.getLastChecked())) {
-                    sendUpdatesToBot(chat, linkUrl);
-                }
-            } else {
-                ParseResult parseResult = linkParser.parse(linkUrl);
-                switch (parseResult) {
-                    case GitHubParseResult gitHubParseResult -> {
-                        OffsetDateTime lastUpdate = clientService
-                                .getGitHubInfo(gitHubParseResult.getUser(), gitHubParseResult.getRepository())
-                                .lastUpdate();
+            counter.addAndGet(checkLinkForUpdate(link, chat, updateTime, linkUrl));
+        }));
+        return counter.get();
+    }
 
-                        if (checkForUpdateTimeNewness(lastUpdate, updateTime, link, chat, linkUrl)) {
-                            counter.getAndIncrement();
-                        }
-                    }
-                    case StackOverflowParseResult stackOverflowParseResult -> {
-                        OffsetDateTime lastUpdate = clientService
-                                .getStackOverflowInfo(stackOverflowParseResult.getQuestionId())
-                                .items()[0]
-                                .last_activity_date();
+    @Override
+    public int updateUncheckedLinks() {
+        AtomicInteger counter = new AtomicInteger();
+        List<Chat> chatList = jdbcTgChatRepository.findAllChats();
+        OffsetDateTime updateTime = OffsetDateTime.now();
 
-                        if (checkForUpdateTimeNewness(lastUpdate, updateTime, link, chat, linkUrl)) {
-                            counter.getAndIncrement();
-                        }
-                    }
-                    default -> throw new IllegalStateException("Unexpected value: " + parseResult);
-                }
+        chatList.forEach(chat -> chat.getTrackedLinksId().forEach(link -> {
+            URI linkUrl;
+            try {
+                linkUrl = new URI(link.getUrl());
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (!Duration
+                    .between(updateTime, link.getLastChecked())
+                    .minus(Duration.ofMillis(checkTime))
+                    .isNegative()){
+                counter.addAndGet(checkLinkForUpdate(link, chat, updateTime, linkUrl));
             }
         }));
         return counter.get();
+    }
+
+    private int checkLinkForUpdate(Link link, Chat chat, OffsetDateTime updateTime, URI linkUrl){
+        int counter = 0;
+        //link was checked in this session of updates
+        if (Duration.between(updateTime, link.getLastChecked()).isZero()) {
+            //link was updated in this session
+            if (link.getLastCheckedWhenWasUpdated().equals(link.getLastChecked())) {
+                sendUpdatesToBot(chat, linkUrl);
+            }
+        } else {
+            ParseResult parseResult = linkParser.parse(linkUrl);
+            switch (parseResult) {
+                case GitHubParseResult gitHubParseResult -> {
+                    OffsetDateTime lastUpdate = clientService
+                            .getGitHubInfo(gitHubParseResult.getUser(), gitHubParseResult.getRepository())
+                            .lastUpdate();
+
+                    if (checkForUpdateTimeNewness(lastUpdate, updateTime, link, chat, linkUrl)) {
+                        counter++;
+                    }
+                }
+                case StackOverflowParseResult stackOverflowParseResult -> {
+                    OffsetDateTime lastUpdate = clientService
+                            .getStackOverflowInfo(stackOverflowParseResult.getQuestionId())
+                            .items()[0]
+                            .last_activity_date();
+
+                    if (checkForUpdateTimeNewness(lastUpdate, updateTime, link, chat, linkUrl)) {
+                        counter++;
+                    }
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + parseResult);
+            }
+        }
+        return counter;
     }
 
     private boolean checkForUpdateTimeNewness(OffsetDateTime lastUpdate, OffsetDateTime updateTime,
