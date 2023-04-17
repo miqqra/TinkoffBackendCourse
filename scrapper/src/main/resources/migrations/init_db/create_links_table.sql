@@ -12,6 +12,8 @@ CREATE TABLE link
     last_updated    TIMESTAMP,
     last_checked    TIMESTAMP,
     last_checked_when_was_updated TIMESTAMP,
+    last_commit_date  TIMESTAMP,
+    last_answer_date  TIMESTAMP,
 
     CONSTRAINT link_pk PRIMARY KEY (id)
 );

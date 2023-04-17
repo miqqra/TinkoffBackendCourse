@@ -21,6 +21,8 @@ public class FindChatResponse {
     private OffsetDateTime lastUpdated;
     private OffsetDateTime lastChecked;
     private OffsetDateTime lastCheckedWhenWasUpdated;
+    private OffsetDateTime lastCommitDate;
+    private OffsetDateTime lastAnswerDate;
 
     public static List<Chat> mapToChat(List<FindChatResponse> list) {
         HashMap<Long, Chat> chats = new HashMap<>();
@@ -32,20 +34,22 @@ public class FindChatResponse {
                         FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse)
                 );
             } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() != null) {
-                Chat newChat = new Chat();
-                newChat.setId(findAllChatsResponse.getId());
-                newChat.setTgChatId(tgChatId);
+                Chat newChat = createChatObject(findAllChatsResponse);
                 newChat.addTrackedLink(
                         FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse)
                 );
-                chats.put(tgChatId, newChat);
+                chats.put(tgChatId, createChatObject(findAllChatsResponse));
             } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() == null) {
-                Chat newChat = new Chat();
-                newChat.setId(findAllChatsResponse.getId());
-                newChat.setTgChatId(tgChatId);
-                chats.put(tgChatId, newChat);
+                chats.put(tgChatId, createChatObject(findAllChatsResponse));
             }
         }
         return chats.values().stream().toList();
+    }
+
+    private static Chat createChatObject(FindChatResponse findAllChatsResponse){
+        Chat newChat = new Chat();
+        newChat.setId(findAllChatsResponse.getId());
+        newChat.setTgChatId(findAllChatsResponse.getTgChatId());
+        return newChat;
     }
 }

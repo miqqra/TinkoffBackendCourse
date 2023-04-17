@@ -63,9 +63,10 @@ public class JdbcTgChatRepository {
     }
 
     public List<Chat> findAllChats() {
-        String query = "select chat.id, tgchatid, trackedlink, url, last_updated, last_checked, last_checked_when_was_updated" +
-                " from chat, link where trackedlink = link.id " +
-                "union select chat.id, tgchatid, trackedlink, null, null, null, null from chat, link " +
+        String query = "select chat.id, tgchatid, trackedlink, " +
+                "url, last_updated, last_checked, last_checked_when_was_updated, last_commit_date, last_answer_date " +
+                "from chat, link where trackedlink = link.id " +
+                "union select chat.id, tgchatid, trackedlink, null, null, null, null, null, null from chat, link " +
                 "where trackedlink is null";
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of(), findChatResponseDataClassRowMapper);
@@ -73,7 +74,8 @@ public class JdbcTgChatRepository {
     }
 
     public Optional<Chat> findChatByTgChatId(Long tgChatId) {
-        String query = "select chat.id, tgchatid, trackedlink, url, last_updated, last_checked, last_checked_when_was_updated " +
+        String query = "select chat.id, tgchatid, trackedlink, " +
+                "url, last_updated, last_checked, last_checked_when_was_updated, last_commit_date, last_answer_date " +
                 "from chat, link where tgchatid = :tgchatid and trackedlink = link.id";
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), findChatResponseDataClassRowMapper);
