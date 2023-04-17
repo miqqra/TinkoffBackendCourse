@@ -1,12 +1,13 @@
 package ru.tinkoff.edu.java.bot.service;
 
+import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import ru.tinkoff.edu.java.bot.client.BotClient;
 import ru.tinkoff.edu.java.bot.dto.request.LinkUpdate;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.exception.IncorrectDataException;
+import ru.tinkoff.edu.java.bot.wrapper.Bot;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,11 +16,13 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 public class BotService {
     private final BotClient botClient;
+    private final Bot bot;
 
     public void sendUpdate(LinkUpdate sendUpdateRequest) {
-        if (sendUpdateRequest.getId() == -1) {
-            throw new IncorrectDataException("Некорректные параметры запроса");
-        }
+        sendUpdateRequest
+                .getTgChatIds()
+                .forEach(tgChatId ->
+                        bot.execute(new SendMessage(tgChatId, sendUpdateRequest.getDescription())));
     }
 
     public String showCommandsList() {
