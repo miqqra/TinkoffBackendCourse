@@ -3,10 +3,10 @@ package ru.tinkoff.edu.java.bot.commands;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.service.BotService;
 
-@Controller
+@Component
 @RequiredArgsConstructor
 public final class TrackCommand implements BotCommand {
     private final BotService botService;
@@ -25,7 +25,7 @@ public final class TrackCommand implements BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        if (getArgument(update).isEmpty()){
+        if (getArgument(update).isEmpty()) {
             return new SendMessage(getUserId(update), "Не указана ссылка для отслеживания");
         }
         return new SendMessage(
