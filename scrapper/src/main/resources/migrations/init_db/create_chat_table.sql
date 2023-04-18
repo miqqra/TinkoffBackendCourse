@@ -9,6 +9,6 @@ CREATE TABLE chat
 
     CONSTRAINT chat_pk PRIMARY KEY (id)
 );
-
-ALTER SEQUENCE chat_sequence
-    OWNED BY chat.id;
+--
+-- ALTER SEQUENCE chat_sequence
+--     OWNED BY chat.id;

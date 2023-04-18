@@ -17,6 +17,5 @@ CREATE TABLE link
 
     CONSTRAINT link_pk PRIMARY KEY (id)
 );
-
-ALTER SEQUENCE links_sequence
-OWNED BY link.id;
+--
+-- ALTER SEQUENCE links_sequence OWNED BY link.id;

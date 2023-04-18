@@ -39,6 +39,11 @@ public class Link {
         this.url = url;
     }
 
+    public Link(Long id, String url) {
+        this.id = id;
+        this.url = url;
+    }
+
     public Link(String url, OffsetDateTime lastUpdated, OffsetDateTime lastChecked, OffsetDateTime lastCheckedWhenWasUpdated, OffsetDateTime lastCommitDate, OffsetDateTime lastAnswerDate) {
         this.url = url;
         this.lastUpdated = lastUpdated;
