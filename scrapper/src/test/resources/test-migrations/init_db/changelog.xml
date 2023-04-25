@@ -9,7 +9,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
     <changeSet id="init_db" author="m.krasnikov">
-        <tagDatabase tag="init_db"></tagDatabase>
+        <tagDatabase tag="init_db"/>
     </changeSet>
 
     <include file="create_links_table.sql" relativeToChangelogFile="true"/>

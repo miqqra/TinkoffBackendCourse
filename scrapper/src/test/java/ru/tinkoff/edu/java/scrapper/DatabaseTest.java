@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.scrapper;
 
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,8 +16,8 @@ import java.util.List;
 
 @SpringBootTest
 public class DatabaseTest extends IntegrationEnvironment {
-    @BeforeEach
-    void setConnection() {
+    @BeforeAll
+    static void setConnection() {
         runMigrations(DB_CONTAINER);
     }
 
@@ -40,7 +39,6 @@ public class DatabaseTest extends IntegrationEnvironment {
             }
 
             assertThat(ids, is(notNullValue()));
-            assertThat(ids, is(not(empty())));
             assertThat(ids.size(), is(equalTo(3)));
             assertThat(ids.get(0), is(equalTo(100L)));
             assertThat(ids.get(1), is(equalTo(101L)));

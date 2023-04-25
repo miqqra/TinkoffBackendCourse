@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+app:
+  scheduler:
+    interval: 10000
+
+client:
+  url:
+    github: https://api.github.com/repos/
+    stackoverflow: https://api.stackexchange.com/2.3/questions/
+
+spring:
+  liquibase:
+    change-log: classpath:test-migrations/master.xml

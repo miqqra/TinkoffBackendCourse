@@ -39,7 +39,7 @@ public class IntegrationEnvironment {
 
     static void runMigrations(JdbcDatabaseContainer<?> container) {
         var changelogPath = new File(".").toPath().toAbsolutePath()
-                .getParent().resolve("src/main/resources/migrations");
+                .getParent().resolve("src/test/resources/test-migrations");
 
         try (var conn = DriverManager.getConnection(
                 container.getJdbcUrl(),
