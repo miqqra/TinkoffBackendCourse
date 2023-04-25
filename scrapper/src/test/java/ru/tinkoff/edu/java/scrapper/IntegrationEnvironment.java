@@ -21,6 +21,7 @@ import java.sql.SQLException;
 @Testcontainers
 public class IntegrationEnvironment {
     public static JdbcDatabaseContainer<?> DB_CONTAINER;
+    public static JdbcConnection connection;
 
     static {
         DB_CONTAINER = new PostgreSQLContainer<>("postgres:15")
@@ -40,7 +41,6 @@ public class IntegrationEnvironment {
     static void runMigrations(JdbcDatabaseContainer<?> container) {
         var changelogPath = new File(".").toPath().toAbsolutePath()
                 .getParent().resolve("src/test/resources/test-migrations");
-
         try (var conn = DriverManager.getConnection(
                 container.getJdbcUrl(),
                 container.getUsername(),
@@ -48,6 +48,7 @@ public class IntegrationEnvironment {
             var changelogDir = new DirectoryResourceAccessor(changelogPath);
 
             var db = new PostgresDatabase();
+            connection = new JdbcConnection(conn);
             db.setConnection(new JdbcConnection(conn));
 
             var liquibase = new Liquibase("master.xml", changelogDir, db);
@@ -56,5 +57,9 @@ public class IntegrationEnvironment {
             e.printStackTrace();
             throw new RuntimeException();
         }
+    }
+
+    public JdbcConnection getConnection() {
+        return connection;
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,31 @@ public class DatabaseTest extends IntegrationEnvironment {
     }
 
     @Test
-    public void connectionTest() {
+    public void connectionTest() throws SQLException {
+        try (var conn = DriverManager.getConnection(
+                DB_CONTAINER.getJdbcUrl(),
+                DB_CONTAINER.getUsername(),
+                DB_CONTAINER.getPassword())) {
+
+            DatabaseMetaData md = conn.getMetaData();
+            ResultSet rs = md.getTables(null, null, "%", new String[]{"TABLE"});
+            List<String> tableNames = new ArrayList<>();
+            while (rs.next()) {
+                tableNames.add(rs.getString("TABLE_NAME"));
+            }
+
+            assertThat(tableNames, is(notNullValue()));
+            assertThat(tableNames, is(not(empty())));
+            assertThat(tableNames.size(), equalTo(4));
+            assertThat(tableNames.get(0), equalTo("chat"));
+            assertThat(tableNames.get(1), equalTo("databasechangelog"));
+            assertThat(tableNames.get(2), equalTo("databasechangeloglock"));
+            assertThat(tableNames.get(3), equalTo("link"));
+        }
+    }
+
+    @Test
+    public void fillDataTest() {
         String SQLRequest = "select id from scrapper.public.chat;";
 
         try (
