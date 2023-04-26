@@ -50,14 +50,38 @@ public class DatabaseTest extends IntegrationEnvironment {
     public void fillDataTest() {
         String SQLRequest = "select id from scrapper.public.chat;";
 
+        String query = """
+                INSERT INTO link(id, urL)
+                values (1, 'github.com');
+                                
+                INSERT INTO link(id, urL)
+                values (2, 'vk.com');
+                                
+                INSERT INTO link(id, urL)
+                values (3, 'stackoverflow.com');
+                                
+                INSERT INTO link(id, urL)
+                values (4, 'mit.com');
+                                
+                INSERT INTO chat(id, tgchatid, trackedlink)
+                    values (100, 200, 1);
+                                
+                INSERT INTO chat(id, tgchatid, trackedlink)
+                    values (101, 200, 2);
+                                
+                INSERT INTO chat(id, tgchatid, trackedlink)
+                    values (102, 200, 3);
+                """;
+
         try (
                 Connection connection = DriverManager.getConnection(
                         DB_CONTAINER.getJdbcUrl(),
                         DB_CONTAINER.getUsername(),
                         DB_CONTAINER.getPassword());
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(SQLRequest)
+                Statement statement = connection.createStatement()
         ) {
+            statement.executeUpdate(query);
+            ResultSet resultSet = statement.executeQuery(SQLRequest);
             List<Long> ids = new ArrayList<>();
             while (resultSet.next()) {
                 ids.add(resultSet.getLong("id"));

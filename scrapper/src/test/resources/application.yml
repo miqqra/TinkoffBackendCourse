@@ -12,4 +12,4 @@ client:
 
 spring:
   liquibase:
-    change-log: classpath:test-migrations/master.xml
+    enabled: false

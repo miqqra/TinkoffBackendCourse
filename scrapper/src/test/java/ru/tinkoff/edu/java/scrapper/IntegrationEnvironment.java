@@ -40,7 +40,7 @@ public class IntegrationEnvironment {
 
     static void runMigrations(JdbcDatabaseContainer<?> container) {
         var changelogPath = new File(".").toPath().toAbsolutePath()
-                .getParent().resolve("src/test/resources/test-migrations");
+                .getParent().resolve("src/main/resources/migrations");
         try (var conn = DriverManager.getConnection(
                 container.getJdbcUrl(),
                 container.getUsername(),
@@ -57,9 +57,5 @@ public class IntegrationEnvironment {
             e.printStackTrace();
             throw new RuntimeException();
         }
-    }
-
-    public JdbcConnection getConnection() {
-        return connection;
     }
 }
