@@ -1,12 +1,10 @@
 package ru.tinkoff.edu.java.bot.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.bot.dto.request.AddLinkRequest;
-import ru.tinkoff.edu.java.bot.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
@@ -31,16 +29,16 @@ public class BotClient {
                 .bodyToMono(ListLinksResponse.class);
     }
 
-    public Mono<ResponseEntity> registrateUser(Long id) {
+    public Mono<String> registrateUser(Long id) {
         String path = "tg-chat/%d".formatted(id);
         return webClient
                 .post()
                 .uri(path)
                 .retrieve()
-                .bodyToMono(ResponseEntity.class);
+                .bodyToMono(String.class);
     }
 
-    public Mono<LinkResponse> startTrackingLink(URI newLink, Long userId) {
+    public Mono<String> startTrackingLink(URI newLink, Long userId) {
         String path = "/links";
         return webClient
                 .post()
@@ -48,7 +46,7 @@ public class BotClient {
                 .body(BodyInserters.fromValue(new AddLinkRequest(newLink)))
                 .header("tgChatId", userId.toString())
                 .retrieve()
-                .bodyToMono(LinkResponse.class);
+                .bodyToMono(String.class);
     }
 
     public Mono<LinkResponse> stopTrackingLink(URI link, Long userId) {
@@ -56,8 +54,10 @@ public class BotClient {
         return webClient
                 .delete()
                 .uri(path)
-                .header("removeLinkRequest", (new RemoveLinkRequest(link)).toString())
-                .header("tgChatId", userId.toString())
+                .headers(httpHeaders -> {
+                    httpHeaders.set("tgChatId", userId.toString());
+                    httpHeaders.set("url", link.toString());
+                })
                 .retrieve()
                 .bodyToMono(LinkResponse.class);
     }

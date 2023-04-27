@@ -1,36 +1,35 @@
 package ru.tinkoff.edu.java.scrapper.chat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 @Entity
+@Table(name = "chat")
 @AllArgsConstructor
 public class Chat {
     @Id
-    @SequenceGenerator(
-            name = "chat_sequence",
-            sequenceName = "chat_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "chat_sequence"
-    )
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(name = "tgchatid")
     private Long tgChatId;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Link> trackedLinksId;
 
     public Chat() {
@@ -44,5 +43,9 @@ public class Chat {
 
     public boolean addTrackedLink(Link link) {
         return trackedLinksId.add(link);
+    }
+
+    public boolean deleteTrackingLink(Link link) {
+        return trackedLinksId.remove(link);
     }
 }

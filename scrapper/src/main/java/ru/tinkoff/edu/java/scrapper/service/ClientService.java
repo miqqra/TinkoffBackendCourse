@@ -1,9 +1,12 @@
-package ru.tinkoff.edu.java.scrapper.service.impl;
+package ru.tinkoff.edu.java.scrapper.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.client.BotClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowClient;
@@ -31,18 +34,24 @@ public class ClientService {
                 .get()
                 .uri(path)
                 .retrieve()
+                .onStatus(HttpStatusCode.valueOf(403)::equals,
+                        clientResponse -> Mono.error(new IllegalAccessException("API временно недоступен")))
                 .bodyToMono(GetGitHubInfoResponse.class)
                 .block();
     }
 
-    public GetGitHubCommitResponse getGitHubCommit(String userName, String repositoryName){
-        String path = "/%s/%s/commits".formatted(userName, repositoryName);
+    public List<GetGitHubCommitResponse> getGitHubCommit(String userName, String repositoryName) {
+        String path = "/%s/%s/commits?per_page=1".formatted(userName, repositoryName);
         return gitHubClient
                 .webClient()
                 .get()
                 .uri(path)
                 .retrieve()
-                .bodyToMono(GetGitHubCommitResponse.class)
+                .onStatus(HttpStatusCode.valueOf(409)::equals, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode.valueOf(403)::equals,
+                        clientResponse -> Mono.error(new IllegalAccessException("API временно недоступен")))
+                .bodyToMono(new ParameterizedTypeReference<List<GetGitHubCommitResponse>>() {
+                })
                 .block();
     }
 
@@ -59,11 +68,13 @@ public class ClientService {
                     httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
                 })
                 .retrieve()
+                .onStatus(HttpStatusCode.valueOf(403)::equals,
+                        clientResponse -> Mono.error(new IllegalAccessException("API временно недоступен")))
                 .bodyToMono(GetStackOverflowInfoResponse.class)
                 .block();
     }
 
-    public GetStackoverflowAnswerResponse getStackoverflowAnswer(Long questionId){
+    public GetStackoverflowAnswerResponse getStackoverflowAnswer(Long questionId) {
         return stackOverflowClient
                 .webClient()
                 .get()
@@ -77,6 +88,8 @@ public class ClientService {
                     httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
                 })
                 .retrieve()
+                .onStatus(HttpStatusCode.valueOf(403)::equals,
+                        clientResponse -> Mono.error(new IllegalAccessException("API временно недоступен")))
                 .bodyToMono(GetStackoverflowAnswerResponse.class)
                 .block();
     }

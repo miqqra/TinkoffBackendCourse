@@ -1,29 +1,19 @@
 package ru.tinkoff.edu.java.bot.service;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import ru.tinkoff.edu.java.bot.client.BotClient;
-import ru.tinkoff.edu.java.bot.dto.request.LinkUpdate;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.wrapper.Bot;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class BotService {
     private final BotClient botClient;
-    private final Bot bot;
-
-    public void sendUpdate(LinkUpdate sendUpdateRequest) {
-        sendUpdateRequest
-                .getTgChatIds()
-                .forEach(tgChatId ->
-                        bot.execute(new SendMessage(tgChatId, sendUpdateRequest.getDescription())));
-    }
 
     public String showCommandsList() {
         return botClient.showCommandsList();
@@ -35,11 +25,10 @@ public class BotService {
 
     public String registrateUser(Long id) {
         try {
-            return botClient
-                    .registrateUser(id)
-                    .block()
-                    .getBody()
-                    .toString();
+            return Objects.requireNonNull(Objects.requireNonNull(
+                    botClient
+                            .registrateUser(id)
+                            .block()));
         } catch (WebClientResponseException e) {
             return "Пользователь уже зарегистрирован";
         }
@@ -58,7 +47,7 @@ public class BotService {
                     .startTrackingLink(newURI, userId)
                     .block();
         } catch (WebClientResponseException e) {
-            return "Некорректная ссылка";
+            return e.getResponseBodyAsString();
         }
         return "Ссылка добавлена";
     }
@@ -76,7 +65,8 @@ public class BotService {
                     .stopTrackingLink(uri, userId)
                     .block();
         } catch (WebClientResponseException e) {
-            return "Неккоректная ссылка";
+            e.printStackTrace();
+            return "Ошибка сервера";
         }
         return "Ссылка больше не отслеживается";
     }

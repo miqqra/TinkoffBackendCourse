@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.repository;
+package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -87,8 +87,8 @@ public class JdbcLinkDao {
     }
 
     public void updateLastActivityDate(String url, OffsetDateTime lastActivityDate, OffsetDateTime lastCheckDate) {
-        String query = "UPDATE link SET last_updated=:lastactivitydate, last_checked_when_was_updated=:lastcheckdate " +
-                "WHERE url=:url; ";
+        String query = "UPDATE link SET last_updated=:lastactivitydate, last_checked_when_was_updated=:lastcheckdate, " +
+                "last_checked = :lastcheckdate WHERE url=:url; ";
         jdbcTemplate.update(query,
                 Map.of("lastactivitydate", lastActivityDate, "lastcheckdate", lastCheckDate, "url", url));
     }
@@ -97,7 +97,7 @@ public class JdbcLinkDao {
         String query = "UPDATE link SET last_commit_date=:lastcommitdate " +
                 "WHERE url=:url; ";
         jdbcTemplate.update(query,
-                Map.of("last_commit_date", lastCommitDate, "url", url));
+                Map.of("lastcommitdate", lastCommitDate, "url", url));
     }
 
     public void updateLastAnswerDate(String url, OffsetDateTime lastAnswerDate) {

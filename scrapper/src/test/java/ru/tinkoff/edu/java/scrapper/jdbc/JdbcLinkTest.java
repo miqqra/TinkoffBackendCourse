@@ -9,7 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
-import ru.tinkoff.edu.java.scrapper.repository.JdbcLinkDao;
+import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkDao;
 
 import java.util.ArrayList;
 import java.util.List;

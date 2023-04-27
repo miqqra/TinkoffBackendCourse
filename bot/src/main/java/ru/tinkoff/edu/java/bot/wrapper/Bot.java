@@ -40,7 +40,7 @@ public class Bot {
                 .stream()
                 .map(update -> userMessageProcessor.process(update))
                 .toList();
-        sendMessages.forEach(sendMessage -> telegramBot.execute(sendMessage));
+        sendMessages.forEach(this::execute);
         return 0;
     }
 

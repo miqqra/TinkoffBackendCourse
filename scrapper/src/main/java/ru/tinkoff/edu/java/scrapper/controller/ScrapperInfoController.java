@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
-import ru.tinkoff.edu.java.scrapper.service.impl.ClientService;
+import ru.tinkoff.edu.java.scrapper.service.ClientService;
 
 @RestController
 @RequiredArgsConstructor

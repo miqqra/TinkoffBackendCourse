@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
-import ru.tinkoff.edu.java.scrapper.repository.JdbcTgChatRepository;
+import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcTgChatRepository;
 
 import java.util.List;
 import java.util.Optional;

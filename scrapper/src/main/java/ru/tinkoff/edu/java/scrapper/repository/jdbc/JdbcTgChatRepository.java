@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.repository;
+package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -26,10 +26,10 @@ public class JdbcTgChatRepository {
 
     @Transactional
     public Long addChat(Long tgChatId) {
-        String query = "insert into chat(tgchatid, trackedlink) values(:tgchatid, :trackedlink) returning *";
+        String query = "insert into chat(tgchatid) values(:tgchatid) returning *";
         jdbcTemplate.query(
                 query,
-                Map.of("tgchatid", tgChatId, "trackedlink", null),
+                Map.of("tgchatid", tgChatId),
                 rowMapper
         );
         return tgChatId;
@@ -63,20 +63,28 @@ public class JdbcTgChatRepository {
     }
 
     public List<Chat> findAllChats() {
-        String query = "select chat.id, tgchatid, trackedlink, " +
-                "url, last_updated, last_checked, last_checked_when_was_updated, last_commit_date, last_answer_date " +
-                "from chat, link where trackedlink = link.id " +
-                "union select chat.id, tgchatid, trackedlink, null, null, null, null, null, null from chat, link " +
-                "where trackedlink is null";
+        String query = """
+                select chat.id, tgchatid, trackedlink, url, last_updated, last_checked,
+                       last_checked_when_was_updated, last_commit_date, last_answer_date
+                from chat, link where trackedlink = link.id
+                union select chat.id, tgchatid, trackedlink, null, null, null,
+                             null, null, null
+                from chat, link where trackedlink is null
+                """;
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of(), findChatResponseDataClassRowMapper);
         return FindChatResponse.mapToChat(findAllChatsResponses);
     }
 
     public Optional<Chat> findChatByTgChatId(Long tgChatId) {
-        String query = "select chat.id, tgchatid, trackedlink, " +
-                "url, last_updated, last_checked, last_checked_when_was_updated, last_commit_date, last_answer_date " +
-                "from chat, link where tgchatid = :tgchatid and trackedlink = link.id";
+        String query = """
+                select chat.id, tgchatid, trackedlink, url, last_updated, last_checked,
+                       last_checked_when_was_updated, last_commit_date, last_answer_date
+                from chat, link where tgchatid = :tgchatid and trackedlink = link.id
+                union select chat.id, tgchatid, trackedlink, null, null, null,
+                             null, null, null
+                from chat, link where tgchatid = :tgchatid and trackedlink is null
+                """;
         List<FindChatResponse> findAllChatsResponses =
                 jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), findChatResponseDataClassRowMapper);
         return Optional.ofNullable(
@@ -95,15 +103,15 @@ public class JdbcTgChatRepository {
     }
 
     @Transactional
-    public Optional<Link> removeChatByUrl(Long tgChatId, String url) {
-        Link link = jdbcLinkDao.findLinkByUrl(url).get();
-        Chat chat = findChatByTgChatId(tgChatId).get();
-        if (!chat.getTrackedLinksId().stream().anyMatch(chatLink -> chatLink.getUrl().equals(url)))
+    public Optional<Link> removeChatByUrl(Chat chat, Link link) {
+        if (chat.getTrackedLinksId().stream().noneMatch(chatLink -> chatLink.getUrl().equals(link.getUrl())))
             return Optional.empty();
-        String query = "delete from chat where tgchatid = :tgchatid and " +
-                "trackedlink = :trackedlink returning trackedlink";
+        String query = """
+                delete from chat where tgchatid = :tgchatid
+                and trackedlink = :trackedlink returning trackedlink
+                """;
         jdbcTemplate.query(query,
-                Map.of("tgchatid", tgChatId, "trackedlink", link.getId()),
+                Map.of("tgchatid", chat.getTgChatId(), "trackedlink", link.getId()),
                 rowMapper);
         return Optional.of(link);
     }

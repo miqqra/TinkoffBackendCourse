@@ -13,14 +13,15 @@ public class ScrapperChatController {
     private final TgChatService tgChatService;
 
     @PostMapping(value = "/tg-chat/{id}")
-    public void registerChat(@PathVariable Long id) {
+    public String registerChat(@PathVariable Long id) {
         tgChatService.register(id);
+        return "Пользователь зарегистрирован";
     }
 
 
     @DeleteMapping(value = "/tg-chat/{id}")
-    public void deleteChat(@PathVariable Long id) {
+    public String deleteChat(@PathVariable Long id) {
         tgChatService.unregister(id);
+        return "Пользователь удален";
     }
-
 }

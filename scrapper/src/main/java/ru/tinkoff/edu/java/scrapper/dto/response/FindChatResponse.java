@@ -30,15 +30,13 @@ public class FindChatResponse {
         for (FindChatResponse findAllChatsResponse : list) {
             tgChatId = findAllChatsResponse.getTgChatId();
             if (chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() != null) {
-                chats.get(tgChatId).addTrackedLink(
-                        FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse)
-                );
+                Chat oldChat = chats.get(tgChatId);
+                oldChat.addTrackedLink(FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse));
+                chats.put(tgChatId, oldChat);
             } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() != null) {
                 Chat newChat = createChatObject(findAllChatsResponse);
-                newChat.addTrackedLink(
-                        FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse)
-                );
-                chats.put(tgChatId, createChatObject(findAllChatsResponse));
+                newChat.addTrackedLink(FindChatResponseLinkMapper.FindChatResponseToLink(findAllChatsResponse));
+                chats.put(tgChatId, newChat);
             } else if (!chats.containsKey(tgChatId) && findAllChatsResponse.getTrackedLink() == null) {
                 chats.put(tgChatId, createChatObject(findAllChatsResponse));
             }
@@ -46,7 +44,7 @@ public class FindChatResponse {
         return chats.values().stream().toList();
     }
 
-    private static Chat createChatObject(FindChatResponse findAllChatsResponse){
+    private static Chat createChatObject(FindChatResponse findAllChatsResponse) {
         Chat newChat = new Chat();
         newChat.setId(findAllChatsResponse.getId());
         newChat.setTgChatId(findAllChatsResponse.getTgChatId());

@@ -1,10 +1,11 @@
 package ru.tinkoff.edu.java.scrapper.chat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,26 +14,31 @@ import java.time.OffsetDateTime;
 
 @Data
 @Entity
+@Table(name = "link")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Link {
     @Id
-    @SequenceGenerator(
-            name = "link_sequence",
-            sequenceName = "link_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "link_sequence"
-    )
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "last_updated")
     private OffsetDateTime lastUpdated;
+
+    @Column(name = "last_checked")
     private OffsetDateTime lastChecked;
+
+    @Column(name = "last_checked_when_was_updated")
     private OffsetDateTime lastCheckedWhenWasUpdated;
+
+    @Column(name = "last_commit_date")
     private OffsetDateTime lastCommitDate;
+
+    @Column(name = "last_answer_date")
     private OffsetDateTime lastAnswerDate;
 
     public Link(String url) {

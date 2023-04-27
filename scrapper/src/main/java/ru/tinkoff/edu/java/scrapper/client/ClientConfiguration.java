@@ -10,13 +10,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class ClientConfiguration {
 
-    @Value("${client.url.github}:https://api.github.com/repos")
+    @Value("${client.url.github:https://api.github.com/repos}")
     private String GITHUB_URL;
 
-    @Value(value = "${client.url.stackoverflow}:https://api.stackexchange.com/2.3/questions")
+    @Value(value = "${client.url.stackoverflow:https://api.stackexchange.com/2.3/questions}")
     private String STACKOVERFLOW_URL;
 
-    @Value("${client.url.bot}:http://localhost:8081")
+    @Value("${client.url.bot:http://localhost:8081}")
     private String BOT_URL;
 
     @Bean
