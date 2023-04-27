@@ -5,7 +5,7 @@ import ru.tinkoff.edu.java.linkparser.links.Link;
 import ru.tinkoff.edu.java.linkparser.links.StackOverflowLink;
 import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
 
-import java.net.URL;
+import java.net.URI;
 
 public class LinkParser {
     public LinkParser() {
@@ -16,7 +16,7 @@ public class LinkParser {
         return new StackOverflowLink(gitHubLink);
     }
 
-    public ParseResult parse(URL url) {
+    public ParseResult parse(URI url) {
         Link linksChain = getChainOfLinksMatched();
         return linksChain.matches(url);
     }

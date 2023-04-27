@@ -3,7 +3,8 @@ server:
 
 app:
   scheduler:
-    interval: 10000
+    interval: 10000 #10sec
+    check: 300000 #5min
 
 springdoc:
   swagger-ui:
@@ -12,8 +13,9 @@ springdoc:
 
 client:
     url:
-      github: https://api.github.com/repos/
-      stackoverflow: https://api.stackexchange.com/2.3/questions/
+      github: https://api.github.com/repos
+      stackoverflow: https://api.stackexchange.com/2.3/questions
+      bot: http://localhost:8081
 
 spring:
   sql:

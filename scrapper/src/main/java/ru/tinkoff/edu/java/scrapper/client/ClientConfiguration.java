@@ -16,6 +16,9 @@ public class ClientConfiguration {
     @Value(value = "${client.url.stackoverflow}:https://api.stackexchange.com/2.3/questions")
     private String STACKOVERFLOW_URL;
 
+    @Value("${client.url.bot}:http://localhost:8081")
+    private String BOT_URL;
+
     @Bean
     public GitHubClient createGitHubClient() {
         return new GitHubClient(createWebClient(GITHUB_URL));
@@ -24,6 +27,10 @@ public class ClientConfiguration {
     @Bean
     public StackOverflowClient createStackOverflowClient() {
         return new StackOverflowClient(createWebClient(STACKOVERFLOW_URL));
+    }
+
+    @Bean BotClient createBotClient(){
+        return new BotClient(createWebClient(BOT_URL));
     }
 
     private WebClient createWebClient(String baseURL) {

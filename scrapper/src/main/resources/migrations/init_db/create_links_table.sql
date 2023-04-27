@@ -9,6 +9,14 @@ CREATE TABLE link
 (
     id              BIGINT          NOT NULL DEFAULT nextval('links_sequence'),
     url             VARCHAR(255)    NOT NULL,
+    id              BIGINT          NOT NULL DEFAULT nextval('links_sequence'),
+    url             VARCHAR(255)    NOT NULL,
+    last_updated    TIMESTAMP,
+    last_checked    TIMESTAMP,
+    last_checked_when_was_updated TIMESTAMP,
 
     CONSTRAINT link_pk PRIMARY KEY (id)
 );
+
+ALTER SEQUENCE links_sequence
+OWNED BY link.id;

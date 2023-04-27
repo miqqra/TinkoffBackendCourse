@@ -38,7 +38,7 @@ public class IntegrationEnvironment {
         registry.add("spring.datasource.password", DB_CONTAINER::getPassword);
     }
 
-    static void runMigrations(JdbcDatabaseContainer<?> container) {
+    protected static void runMigrations(JdbcDatabaseContainer<?> container) {
         var changelogPath = new File(".").toPath().toAbsolutePath()
                 .getParent().resolve("src/main/resources/migrations");
         try (var conn = DriverManager.getConnection(
