@@ -11,6 +11,7 @@ import ru.tinkoff.edu.java.scrapper.service.LinkService;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -42,7 +43,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> listAll(long tgChatId) {
+    public Collection<Link> listAll(long tgChatId) {
         Iterable<Link> linkIterable = jdbcLinkDao.findAllLinksById(tgChatId);
         List<Link> links = new ArrayList<>();
         for (Link link : linkIterable) links.add(link);

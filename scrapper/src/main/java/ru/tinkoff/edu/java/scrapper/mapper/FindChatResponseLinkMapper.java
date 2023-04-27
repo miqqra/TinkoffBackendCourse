@@ -10,6 +10,8 @@ public class FindChatResponseLinkMapper {
                 findChatResponse.getUrl(),
                 findChatResponse.getLastUpdated(),
                 findChatResponse.getLastChecked(),
-                findChatResponse.getLastCheckedWhenWasUpdated());
+                findChatResponse.getLastCheckedWhenWasUpdated(),
+                findChatResponse.getLastCommitDate(),
+                findChatResponse.getLastAnswerDate());
     }
 }

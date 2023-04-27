@@ -9,8 +9,8 @@ import ru.tinkoff.edu.java.linkparser.parseResult.GitHubParseResult;
 import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
 import ru.tinkoff.edu.java.linkparser.parseResult.StackOverflowParseResult;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @SpringBootTest(classes = {LinkParser.class})
 public class LinkParserTest {
@@ -22,8 +22,8 @@ public class LinkParserTest {
             "https://stackoverflow.com/questions/49733733",
             "https://stackoverflow.com/questions/49733733/"
     })
-    void returnsSameStackOverflowQuestionIds(String input) throws MalformedURLException {
-        ParseResult parseResult = linkParser.parse(new URL(input));
+    void returnsSameStackOverflowQuestionIds(String input) throws URISyntaxException {
+        ParseResult parseResult = linkParser.parse(new URI(input));
         assertThat(parseResult, is(notNullValue()));
         assertThat(parseResult, is(instanceOf(StackOverflowParseResult.class)));
         assertThat(((StackOverflowParseResult) parseResult).getQuestionId(), equalTo(49733733L));
@@ -34,8 +34,8 @@ public class LinkParserTest {
             "https://ru.stackoverflow.com/questions/1510760",
             "https://ru.stackoverflow.com/questions/1510760/"
     })
-    void returnsOtherSameStackOverflowQuestionIds(String input) throws MalformedURLException {
-        ParseResult parseResult = linkParser.parse(new URL(input));
+    void returnsOtherSameStackOverflowQuestionIds(String input) throws URISyntaxException {
+        ParseResult parseResult = linkParser.parse(new URI(input));
         assertThat(parseResult, is(notNullValue()));
         assertThat(parseResult, is(instanceOf(StackOverflowParseResult.class)));
         assertThat(((StackOverflowParseResult) parseResult).getQuestionId(), equalTo(1510760L));
@@ -47,8 +47,8 @@ public class LinkParserTest {
             "https://github.com/miqqra/TinkoffBackendCourse",
             "https://github.com/miqqra/TinkoffBackendCourse/"
     })
-    void returnsSameGithubData(String input) throws MalformedURLException {
-        ParseResult parseResult = linkParser.parse(new URL(input));
+    void returnsSameGithubData(String input) throws URISyntaxException {
+        ParseResult parseResult = linkParser.parse(new URI(input));
         assertThat(parseResult, is(notNullValue()));
         assertThat(parseResult, is(instanceOf(GitHubParseResult.class)));
         assertThat(((GitHubParseResult) parseResult).getUser(), equalTo("miqqra"));
@@ -60,8 +60,8 @@ public class LinkParserTest {
     @ValueSource(strings = {
             "https://github.com/miqqra/OOP"
     })
-    void returnsOtherGithubData(String input) throws MalformedURLException {
-        ParseResult parseResult = linkParser.parse(new URL(input));
+    void returnsOtherGithubData(String input) throws URISyntaxException {
+        ParseResult parseResult = linkParser.parse(new URI(input));
         assertThat(parseResult, is(notNullValue()));
         assertThat(parseResult, is(instanceOf(GitHubParseResult.class)));
         assertThat(((GitHubParseResult) parseResult).getUser(), equalTo("miqqra"));
@@ -81,8 +81,8 @@ public class LinkParserTest {
             "https://github",
             "https://github.com/miqqra"
     })
-    void parseIncorrectURLs(String input) throws MalformedURLException {
-        assertThat(linkParser.parse(new URL(input)), is(nullValue()));
+    void parseIncorrectURLs(String input) throws URISyntaxException {
+        assertThat(linkParser.parse(new URI(input)), is(nullValue()));
 
     }
 }

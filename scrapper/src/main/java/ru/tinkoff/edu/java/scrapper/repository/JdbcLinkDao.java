@@ -37,7 +37,8 @@ public class JdbcLinkDao {
     }
 
     public Iterable<Link> findAllLinksById(Long tgChatId) {
-        String query = "select link.id, url, last_updated, last_checked, last_checked_when_was_updated " +
+        String query = "select link.id, url, last_updated, last_checked, " +
+                "last_checked_when_was_updated, last_commit_date, last_answer_date " +
                 "from link, chat where tgchatid = :tgchatid and trackedlink = link.id";
         return jdbcTemplate.query(query, Map.of("tgchatid", tgChatId), rowMapper);
     }
@@ -90,5 +91,19 @@ public class JdbcLinkDao {
                 "WHERE url=:url; ";
         jdbcTemplate.update(query,
                 Map.of("lastactivitydate", lastActivityDate, "lastcheckdate", lastCheckDate, "url", url));
+    }
+
+    public void updateLastCommitDate(String url, OffsetDateTime lastCommitDate) {
+        String query = "UPDATE link SET last_commit_date=:lastcommitdate " +
+                "WHERE url=:url; ";
+        jdbcTemplate.update(query,
+                Map.of("last_commit_date", lastCommitDate, "url", url));
+    }
+
+    public void updateLastAnswerDate(String url, OffsetDateTime lastAnswerDate) {
+        String query = "UPDATE link SET last_answer_date=:lastanswerdate " +
+                "WHERE url=:url; ";
+        jdbcTemplate.update(query,
+                Map.of("lastanswerdate", lastAnswerDate, "url", url));
     }
 }

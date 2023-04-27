@@ -12,12 +12,12 @@ import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.mapper.ListLinkResponseLinkMapper;
-import ru.tinkoff.edu.java.scrapper.service.impl.JdbcLinkService;
+import ru.tinkoff.edu.java.scrapper.service.LinkService;
 
 @RestController
 @RequiredArgsConstructor
 public class ScrapperLinkController {
-    private final JdbcLinkService linkService;
+    private final LinkService linkService;
 
     @GetMapping("/links")
     public ListLinksResponse getAllTrackedLinks(@RequestHeader Long tgChatId) {
