@@ -14,7 +14,6 @@ services:
     restart: always
     networks:
       - backend
-
   liquibase-migrations:
     image: liquibase/liquibase:4.18
     depends_on:
@@ -31,6 +30,15 @@ services:
       - ./migrations:/liquibase/changelog
     networks:
       - backend
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    restart: always
+    volumes:
+      - ./rabbitmq_state:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
 
 volumes:
   postgres-data:
