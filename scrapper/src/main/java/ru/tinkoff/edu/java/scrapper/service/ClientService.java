@@ -4,13 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
-import ru.tinkoff.edu.java.scrapper.client.BotClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowClient;
-import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubCommitResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
@@ -19,13 +15,12 @@ import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
 import java.net.URI;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
-public class ClientService {
+public abstract class ClientService {
+    protected final GitHubClient gitHubClient;
+    protected final StackOverflowClient stackOverflowClient;
 
-    private final GitHubClient gitHubClient;
-    private final StackOverflowClient stackOverflowClient;
-    private final BotClient botClient;
+    public abstract void sendUpdateToBot(Long id, URI url, String description, List<Long> tgChatIds);
 
     public GetGitHubInfoResponse getGitHubInfo(String userName, String repositoryName) {
         String path = "/%s/%s".formatted(userName, repositoryName);
@@ -92,14 +87,5 @@ public class ClientService {
                         clientResponse -> Mono.error(new IllegalAccessException("API временно недоступен")))
                 .bodyToMono(GetStackoverflowAnswerResponse.class)
                 .block();
-    }
-
-    public void sendUpdateToBot(Long id, URI url, String description, List<Long> tgChatIds) {
-        String path = "/updates";
-        botClient
-                .webClient()
-                .post()
-                .uri(path)
-                .body(BodyInserters.fromValue(new LinkUpdateRequest(id, url, description, tgChatIds)));
     }
 }

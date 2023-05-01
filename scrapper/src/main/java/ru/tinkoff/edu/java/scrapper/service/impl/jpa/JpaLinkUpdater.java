@@ -9,8 +9,8 @@ import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubCommitResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkDao;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaTgChatRepository;
-import ru.tinkoff.edu.java.scrapper.service.ClientService;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdater;
+import ru.tinkoff.edu.java.scrapper.service.impl.sync.BotClientService;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -20,7 +20,7 @@ import java.util.List;
 public class JpaLinkUpdater extends LinkUpdater {
     private final JpaTgChatRepository jpaTgChatRepository;
     private final JpaLinkDao jpaLinkDao;
-    private final ClientService clientService;
+    private final BotClientService clientService;
     @Value("#{@schedulerCheckMs}")
     private Long checkTime;
     private LinkParser linkParser = new LinkParser();

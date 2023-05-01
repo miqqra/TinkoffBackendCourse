@@ -2,7 +2,9 @@ server:
   port: 8081
 
 app:
-  token: newtoken
+  token: newToken
+  scrapper-queue:
+    name: directQueueYml
 
 springdoc:
   swagger-ui:

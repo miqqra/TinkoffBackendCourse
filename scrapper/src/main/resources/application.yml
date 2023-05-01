@@ -2,10 +2,14 @@ server:
   port: 8080
 
 app:
-  database-access-type: jpa
+  database-access-type: jdbc
+  use-queue: true
   scheduler:
-    interval: 10000 #10sec
-    check: 300000 #5min
+    interval: 60000 #1min
+    check: 600000 #10min
+  rabbitMQNames:
+    queue-name: directQueueYml
+    exchange-name: directExchangeYml
 
 springdoc:
   swagger-ui:

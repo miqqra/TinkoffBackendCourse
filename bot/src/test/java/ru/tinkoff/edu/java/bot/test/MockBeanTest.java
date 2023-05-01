@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.tinkoff.edu.java.bot.commands.ListCommand;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.service.BotService;
+import ru.tinkoff.edu.java.bot.service.RestBotService;
 import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
 
 import java.net.URI;
@@ -28,7 +28,7 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class MockBeanTest {
     @Mock
-    private BotService botService;
+    private RestBotService botService;
     private UserMessageProcessor userMessageProcessor;
     @Mock
     private Update update;

@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class BotService {
+public class RestBotService {
     private final BotClient botClient;
 
     public String showCommandsList() {

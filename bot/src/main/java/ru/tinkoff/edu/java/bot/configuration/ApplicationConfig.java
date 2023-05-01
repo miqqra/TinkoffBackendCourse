@@ -7,9 +7,14 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String token) {
+public record ApplicationConfig(@NotNull String token, @NotNull ScrapperQueue scrapperQueue) {
     @Bean
     public String getBotToken(ApplicationConfig config){
         return config.token();
+    }
+
+    @Bean
+    public String queueName(ApplicationConfig config){
+        return config.scrapperQueue().name();
     }
 }

@@ -6,13 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdater;
-
 @Component
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
     Logger logger = LoggerFactory.getLogger(LinkUpdaterScheduler.class);
     private final LinkUpdater linkUpdater;
-
     @Scheduled(fixedDelayString = "#{@schedulerIntervalMs}")
     public void update() {
         int updatedLinksNumber;
