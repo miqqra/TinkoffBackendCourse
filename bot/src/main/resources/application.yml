@@ -3,6 +3,7 @@ server:
 
 app:
   token: newToken
+  use-queue: true
   scrapper-queue:
     name: directQueueYml
 

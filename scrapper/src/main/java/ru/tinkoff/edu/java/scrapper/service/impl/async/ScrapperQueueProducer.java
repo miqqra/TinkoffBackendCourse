@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.async;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
@@ -11,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 public class ScrapperQueueProducer extends ClientService {
+    Logger logger = LoggerFactory.getLogger(ScrapperQueueProducer.class);
     private final RabbitTemplate rabbitTemplate;
     private final Queue queue;
 

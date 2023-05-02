@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.configuration.rabbitmq;
 
-
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
