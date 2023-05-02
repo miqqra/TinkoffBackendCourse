@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.sync;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.BodyInserters;
 import ru.tinkoff.edu.java.scrapper.client.BotClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
@@ -25,6 +27,9 @@ public class BotClientService extends ClientService {
                 .webClient()
                 .post()
                 .uri(path)
-                .body(BodyInserters.fromValue(new LinkUpdateRequest(id, url, description, tgChatIds)));
+                .body(BodyInserters.fromValue(new LinkUpdateRequest(id, url, description, tgChatIds)))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }

@@ -18,7 +18,6 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-
 @RequiredArgsConstructor
 public class JdbcLinkUpdater extends LinkUpdater {
     Logger logger = LoggerFactory.getLogger(JdbcLinkUpdater.class);
@@ -51,47 +50,49 @@ public class JdbcLinkUpdater extends LinkUpdater {
 
     protected void checkForNewCommit(GetGitHubCommitResponse.GitHubCommitAuthor lastCommitInfo,
                                      Link link, Chat chat, URI linkUrl) {
+        OffsetDateTime localTime = lastCommitInfo.date().plusHours(7L);
+        String message;
         if (link.getLastCommitDate() == null) {
-            logger.info("Last commit at %s was made by %s at %s"
-                    .formatted(link.getUrl(), lastCommitInfo.name(), lastCommitInfo.date().toString()));
+            message = "Last commit at %s was made by %s at %s"
+                    .formatted(link.getUrl(), lastCommitInfo.name(), localTime.toString());
+
+            logger.info(message);
             jdbcLinkDao.updateLastCommitDate(link.getUrl(), lastCommitInfo.date());
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Last commit at %s was made by %s at %s"
-                            .formatted(link.getUrl(), lastCommitInfo.name(), lastCommitInfo.date().toString()));
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         } else if (link.getLastCommitDate().isAfter(lastCommitInfo.date())) {
-            logger.info("Found new updates with %s: %s made new commit at %s"
-                    .formatted(link.getUrl(), lastCommitInfo.name(), lastCommitInfo.date().toString()));
+            message = "Found new updates with %s: %s made new commit at %s"
+                    .formatted(link.getUrl(), lastCommitInfo.name(), localTime.toString());
+
+            logger.info(message);
             jdbcLinkDao.updateLastCommitDate(link.getUrl(), lastCommitInfo.date());
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Found new updates with %s: %s made new commit at %s"
-                            .formatted(link.getUrl(), lastCommitInfo.name(), lastCommitInfo.date().toString()));
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         } else {
-            logger.info("Found new updates in %s"
-                    .formatted(link.getUrl()));
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Found new updates in %s"
-                            .formatted(link.getUrl()));
+            message = "Found new updates in %s".formatted(link.getUrl());
+            logger.info(message);
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         }
     }
 
     protected void checkForNewAnswer(GetStackoverflowAnswerResponse.StackOverflowAnswers lastAnswerInfo,
                                      Link link, Chat chat, URI linkUrl) {
+        OffsetDateTime localTime = lastAnswerInfo.last_activity_date().plusHours(7L);
+        String message;
         if (link.getLastAnswerDate() == null) {
+            message = "Last answer at %s was made by %s at %s"
+                    .formatted(link.getUrl(), lastAnswerInfo.owner().display_name(), localTime.toString());
+
             jdbcLinkDao.updateLastAnswerDate(link.getUrl(), lastAnswerInfo.last_activity_date());
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Last answer at %s was made by %s at %s"
-                            .formatted(link.getUrl(), lastAnswerInfo.owner().display_name(),
-                                    lastAnswerInfo.last_activity_date().toString()));
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         } else if (link.getLastAnswerDate().isAfter(lastAnswerInfo.last_activity_date())) {
+            message = "Found new updates with %s: %s left new answer at %s"
+                    .formatted(link.getUrl(), lastAnswerInfo.owner().display_name(), localTime.toString());
+
             jdbcLinkDao.updateLastAnswerDate(link.getUrl(), lastAnswerInfo.last_activity_date());
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Found new updates with %s: %s left new answer at %s"
-                            .formatted(link.getUrl(), lastAnswerInfo.owner().display_name(),
-                                    lastAnswerInfo.last_activity_date().toString()));
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         } else {
-            sendUpdatesToBot(clientService, chat, linkUrl,
-                    "Found new updates in %s"
-                            .formatted(link.getUrl()));
+            message = "Found new updates in %s".formatted(link.getUrl());
+
+            sendUpdatesToBot(clientService, chat, linkUrl, message);
         }
     }
 }

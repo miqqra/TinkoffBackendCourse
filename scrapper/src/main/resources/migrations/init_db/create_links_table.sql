@@ -9,11 +9,11 @@ CREATE TABLE link
 (
     id              BIGINT          NOT NULL DEFAULT nextval('links_sequence'),
     url             VARCHAR(255)    NOT NULL,
-    last_updated    TIMESTAMP,
-    last_checked    TIMESTAMP,
-    last_checked_when_was_updated TIMESTAMP,
-    last_commit_date  TIMESTAMP,
-    last_answer_date  TIMESTAMP,
+    last_updated    timestamptz,
+    last_checked    timestamptz,
+    last_checked_when_was_updated timestamptz,
+    last_commit_date  timestamptz,
+    last_answer_date  timestamptz,
 
     CONSTRAINT link_pk PRIMARY KEY (id)
 );

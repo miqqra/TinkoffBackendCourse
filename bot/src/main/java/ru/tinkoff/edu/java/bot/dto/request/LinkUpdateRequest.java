@@ -6,7 +6,7 @@ import java.net.URI;
 import java.util.List;
 
 @Data
-public class LinkUpdate {
+public class LinkUpdateRequest {
     private Long id;
     private URI url;
     private String description;

@@ -27,7 +27,7 @@ public abstract class LinkUpdater {
 
     public int iterateOverAllLinks(List<Chat> chatList, LinkParser linkParser, ClientService clientService) {
         AtomicInteger counter = new AtomicInteger();
-        OffsetDateTime updateTime = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime updateTime = OffsetDateTime.now(ZoneOffset.of("+07:00"));
 
         chatList.forEach(chat -> chat.getTrackedLinksId().forEach(link -> {
             URI linkUrl;
@@ -45,7 +45,7 @@ public abstract class LinkUpdater {
     public int iterateOverUncheckedLinks(List<Chat> chatList, long checkTime,
                                          LinkParser linkParser, ClientService clientService) {
         AtomicInteger counter = new AtomicInteger();
-        OffsetDateTime updateTime = ZonedDateTime.now()
+        OffsetDateTime updateTime = ZonedDateTime.now(ZoneOffset.of("+07:00"))
                 .withZoneSameInstant(ZoneId.of("UTC-8")).toOffsetDateTime();
 
         chatList.forEach(chat -> chat.getTrackedLinksId().forEach(link -> {
