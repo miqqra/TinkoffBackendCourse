@@ -57,7 +57,7 @@ public class JdbcLinkService implements LinkService {
         } else if (chat
                 .getTrackedLinksId()
                 .stream()
-                .noneMatch(x -> x.getUrl().equals(url.toString()))){
+                .noneMatch(x -> x.getUrl().equals(url.toString()))) {
             throw new ExistingDataException("Ссылка не найдена");
         }
         return jdbcTgChatRepository

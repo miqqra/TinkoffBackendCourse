@@ -4,8 +4,9 @@ server:
 app:
   token: newToken
   use-queue: true
-  scrapper-queue:
-    name: directQueueYml
+  rabbitMQNames:
+    queue-name: directQueueYml
+    exchange-name: directExchangeYml
 
 springdoc:
   swagger-ui:

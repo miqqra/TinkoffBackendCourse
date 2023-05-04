@@ -14,7 +14,7 @@ public class NotUseQueueConfiguration {
     @Bean
     public BotClientService botClientService(GitHubClient gitHubClient,
                                              StackOverflowClient stackOverflowClient,
-                                             BotClient botClient){
+                                             BotClient botClient) {
         return new BotClientService(gitHubClient, stackOverflowClient, botClient);
     }
 }

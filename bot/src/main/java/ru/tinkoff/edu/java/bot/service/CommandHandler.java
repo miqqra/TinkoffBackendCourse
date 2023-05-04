@@ -1,30 +1,19 @@
-package ru.tinkoff.edu.java.bot.controller;
+package ru.tinkoff.edu.java.bot.service;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import ru.tinkoff.edu.java.bot.client.BotClient;
-import ru.tinkoff.edu.java.bot.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.wrapper.Bot;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+@Component
 @RequiredArgsConstructor
-public abstract class UpdateHandler {
-    private final Bot bot;
+public class CommandHandler {
     private final BotClient botClient;
-
-    public abstract void receiver(LinkUpdateRequest update);
-
-    public void handleUpdates(LinkUpdateRequest linkUpdate){
-        linkUpdate
-                .getTgChatIds()
-                .forEach(tgChatId ->
-                        bot.execute(new SendMessage(tgChatId, linkUpdate.getDescription())));
-    }
 
     public String showCommandsList() {
         return botClient.showCommandsList();
@@ -58,7 +47,7 @@ public abstract class UpdateHandler {
                     .startTrackingLink(newURI, userId)
                     .block();
         } catch (WebClientResponseException e) {
-            return "Некорректная ссылка";
+            return e.getResponseBodyAsString();
         }
         return "Ссылка добавлена";
     }

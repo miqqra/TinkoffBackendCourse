@@ -20,27 +20,27 @@ public record ApplicationConfig(@NotNull Scheduler scheduler,
     }
 
     @Bean
-    public long schedulerCheckMs(ApplicationConfig config){
+    public long schedulerCheckMs(ApplicationConfig config) {
         return config.scheduler().check().toMillis();
     }
 
     @Bean
-    public AccessType accessType(ApplicationConfig config){
+    public AccessType accessType(ApplicationConfig config) {
         return config.databaseAccessType();
     }
 
     @Bean
-    public String queueName(ApplicationConfig config){
+    public String queueName(ApplicationConfig config) {
         return config.rabbitMQNames().queueName();
     }
 
     @Bean
-    public String exchangeName(ApplicationConfig config){
+    public String exchangeName(ApplicationConfig config) {
         return config.rabbitMQNames().exchangeName();
     }
 
     @Bean
-    public Boolean useQueue(ApplicationConfig config){
+    public Boolean useQueue(ApplicationConfig config) {
         return config.useQueue();
     }
 }

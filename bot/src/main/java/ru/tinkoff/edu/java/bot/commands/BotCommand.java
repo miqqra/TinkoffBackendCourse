@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 public interface BotCommand {
 
     String getCommand();
+
     String getDescription();
 
     SendMessage handle(Update update);
