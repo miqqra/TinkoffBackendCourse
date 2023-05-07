@@ -3,10 +3,10 @@ name: Scrapper CI
 on:
   push:
     paths:
-      - "TinkoffBackendCourse/scrapper/**"
-      - "TinkoffBackendCourse/pom.xml"
-      - "TinkoffBackendCourse/scrapper.Dockerfile"
-      - "TinkoffBackendCourse/.github/workflows/scrapper.yml"
+      - "scrapper/**"
+      - "pom.xml"
+      - "scrapper.Dockerfile"
+      - ".github/workflows/scrapper.yml"
 
 jobs:
   build:
