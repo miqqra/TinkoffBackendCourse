@@ -1,0 +1,56 @@
+name: Bot CI
+
+on:
+  push:
+    paths:
+      - "TinkoffBackendCourse/bot/**"
+      - "TinkoffBackendCourse/pom.xml"
+      - "TinkoffBackendCourse/bot.Dockerfile"
+      - "TinkoffBackendCourse/.github/workflows/bot.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permisions:
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build
+        run: mvn package -pl bot -am
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build --file bot.Dockerfile -t ghcr.io/miqqra/bot:latest .
+
+      - name: Push image to Container Registry
+        run: docker push ghcr.io/miqqra/bot:latest
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run check style
+        run: mvn -pl bot -am checkstyle:check
