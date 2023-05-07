@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build --file bot.Dockerfile -t ghcr.io/miqqra/scrapper:latest .
+        run: docker build --file scrapper.Dockerfile -t ghcr.io/miqqra/scrapper:latest .
 
       - name: Push image to Container Registry
         run: docker push ghcr.io/miqqra/scrapper:latest
