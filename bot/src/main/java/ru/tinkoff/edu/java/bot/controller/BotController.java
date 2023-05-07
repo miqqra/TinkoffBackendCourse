@@ -16,8 +16,8 @@ public class BotController {
     @PostMapping(value = "/updates")
     public void sendUpdate(@RequestBody LinkUpdate sendUpdateRequest) {
         sendUpdateRequest
-                .getTgChatIds()
-                .forEach(tgChatId ->
-                        bot.execute(new SendMessage(tgChatId, sendUpdateRequest.getDescription())));
+            .getTgChatIds()
+            .forEach(tgChatId ->
+                bot.execute(new SendMessage(tgChatId, sendUpdateRequest.getDescription())));
     }
 }

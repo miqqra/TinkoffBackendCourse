@@ -32,15 +32,15 @@ public final class ListCommand implements BotCommand {
         List<LinkResponse> listLinksResponse = botService.showTrackedLinks(userId).links();
         String result = listLinksResponse.isEmpty() ? "Нет отслеживаемых ссылок" : prettyPrint(listLinksResponse);
         return new SendMessage(
-                userId,
-                result
+            userId,
+            result
         );
     }
 
     private String prettyPrint(List<LinkResponse> linkResponses) {
         StringBuilder stringBuilder = new StringBuilder();
         linkResponses
-                .forEach(linkResponse -> stringBuilder.append(linkResponse.url()).append("\n"));
+            .forEach(linkResponse -> stringBuilder.append(linkResponse.url()).append("\n"));
         return stringBuilder.toString();
     }
 }

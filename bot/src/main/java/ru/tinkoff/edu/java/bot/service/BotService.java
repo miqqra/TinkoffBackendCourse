@@ -26,9 +26,9 @@ public class BotService {
     public String registrateUser(Long id) {
         try {
             return Objects.requireNonNull(Objects.requireNonNull(
-                    botClient
-                            .registrateUser(id)
-                            .block()));
+                botClient
+                    .registrateUser(id)
+                    .block()));
         } catch (WebClientResponseException e) {
             return "Пользователь уже зарегистрирован";
         }
@@ -44,8 +44,8 @@ public class BotService {
 
         try {
             botClient
-                    .startTrackingLink(newURI, userId)
-                    .block();
+                .startTrackingLink(newURI, userId)
+                .block();
         } catch (WebClientResponseException e) {
             return e.getResponseBodyAsString();
         }
@@ -62,8 +62,8 @@ public class BotService {
 
         try {
             botClient
-                    .stopTrackingLink(uri, userId)
-                    .block();
+                .stopTrackingLink(uri, userId)
+                .block();
         } catch (WebClientResponseException e) {
             e.printStackTrace();
             return "Ошибка сервера";

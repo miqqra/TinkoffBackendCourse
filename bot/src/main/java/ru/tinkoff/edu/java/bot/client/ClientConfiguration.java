@@ -19,7 +19,7 @@ public class ClientConfiguration {
 
     private WebClient createWebClient(String baseUrl) {
         return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+            .baseUrl(baseUrl)
+            .build();
     }
 }

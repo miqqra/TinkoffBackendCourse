@@ -37,9 +37,9 @@ public class Bot {
 
     public int process(List<Update> updates) {
         List<SendMessage> sendMessages = updates
-                .stream()
-                .map(update -> userMessageProcessor.process(update))
-                .toList();
+            .stream()
+            .map(update -> userMessageProcessor.process(update))
+            .toList();
         sendMessages.forEach(this::execute);
         return 0;
     }
@@ -47,7 +47,7 @@ public class Bot {
     public void start() {
         telegramBot = new TelegramBot(token);
         userMessageProcessor = new UserMessageProcessor(
-                List.of(helpCommand, listCommand, startCommand, trackCommand, untrackCommand)
+            List.of(helpCommand, listCommand, startCommand, trackCommand, untrackCommand)
         );
 
         telegramBot.setUpdatesListener((updates) -> {

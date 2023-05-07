@@ -22,43 +22,43 @@ public class BotClient {
     public Mono<ListLinksResponse> showTrackedLinks(Long id) {
         String path = "/links";
         return webClient
-                .get()
-                .uri(path)
-                .header("tgChatId", id.toString())
-                .retrieve()
-                .bodyToMono(ListLinksResponse.class);
+            .get()
+            .uri(path)
+            .header("tgChatId", id.toString())
+            .retrieve()
+            .bodyToMono(ListLinksResponse.class);
     }
 
     public Mono<String> registrateUser(Long id) {
         String path = "tg-chat/%d".formatted(id);
         return webClient
-                .post()
-                .uri(path)
-                .retrieve()
-                .bodyToMono(String.class);
+            .post()
+            .uri(path)
+            .retrieve()
+            .bodyToMono(String.class);
     }
 
     public Mono<String> startTrackingLink(URI newLink, Long userId) {
         String path = "/links";
         return webClient
-                .post()
-                .uri(path)
-                .body(BodyInserters.fromValue(new AddLinkRequest(newLink)))
-                .header("tgChatId", userId.toString())
-                .retrieve()
-                .bodyToMono(String.class);
+            .post()
+            .uri(path)
+            .body(BodyInserters.fromValue(new AddLinkRequest(newLink)))
+            .header("tgChatId", userId.toString())
+            .retrieve()
+            .bodyToMono(String.class);
     }
 
     public Mono<LinkResponse> stopTrackingLink(URI link, Long userId) {
         String path = "/links";
         return webClient
-                .delete()
-                .uri(path)
-                .headers(httpHeaders -> {
-                    httpHeaders.set("tgChatId", userId.toString());
-                    httpHeaders.set("url", link.toString());
-                })
-                .retrieve()
-                .bodyToMono(LinkResponse.class);
+            .delete()
+            .uri(path)
+            .headers(httpHeaders -> {
+                httpHeaders.set("tgChatId", userId.toString());
+                httpHeaders.set("url", link.toString());
+            })
+            .retrieve()
+            .bodyToMono(LinkResponse.class);
     }
 }

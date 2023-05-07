@@ -29,7 +29,8 @@ public final class TrackCommand implements BotCommand {
             return new SendMessage(getUserId(update), "Не указана ссылка для отслеживания");
         }
         return new SendMessage(
-                getUserId(update),
-                botService.startTrackingLink(getArgument(update), getUserId(update)));
+            getUserId(update),
+            botService.startTrackingLink(getArgument(update), getUserId(update))
+        );
     }
 }

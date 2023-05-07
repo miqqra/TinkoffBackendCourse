@@ -27,8 +27,8 @@ public final class HelpCommand implements BotCommand {
     public SendMessage handle(Update update) {
         Long userId = getUserId(update);
         return new SendMessage(
-                userId,
-                botService.showCommandsList()
+            userId,
+            botService.showCommandsList()
         );
     }
 }

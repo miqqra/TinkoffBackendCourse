@@ -30,7 +30,8 @@ public final class UntrackCommand implements BotCommand {
             return new SendMessage(userId, "Не указана ссылка для прекращения отслеживания");
         }
         return new SendMessage(
-                userId,
-                botService.stopTrackingLink(getArgument(update), userId));
+            userId,
+            botService.stopTrackingLink(getArgument(update), userId)
+        );
     }
 }

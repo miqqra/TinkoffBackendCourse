@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.bot.exception;
 
-public class IncorrectDataException extends RuntimeException{
+public class IncorrectDataException extends RuntimeException {
     /**
      * Constructs a new runtime exception with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
