@@ -9,7 +9,11 @@ import com.pengrad.telegrambot.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.commands.*;
+import ru.tinkoff.edu.java.bot.commands.HelpCommand;
+import ru.tinkoff.edu.java.bot.commands.ListCommand;
+import ru.tinkoff.edu.java.bot.commands.StartCommand;
+import ru.tinkoff.edu.java.bot.commands.TrackCommand;
+import ru.tinkoff.edu.java.bot.commands.UntrackCommand;
 
 import java.util.List;
 
@@ -59,6 +63,10 @@ public class Bot {
 
     /**
      * Execute request.
+     *
+     * @param request Request.
+     * @param <T>     Response type.
+     * @param <R>     Request type.
      */
     public <T extends BaseRequest<T, R>, R extends BaseResponse>
     void execute(final BaseRequest<T, R> request) {
@@ -66,15 +74,14 @@ public class Bot {
     }
 
     /**
-     * Handle updates.
+     * @param updates Updates list.
      */
-    public int process(final List<Update> updates) {
+    public void process(final List<Update> updates) {
         List<SendMessage> sendMessages = updates
             .stream()
             .map(update -> userMessageProcessor.process(update))
             .toList();
         sendMessages.forEach(this::execute);
-        return 0;
     }
 
     /**
@@ -83,7 +90,9 @@ public class Bot {
     public void start() {
         telegramBot = new TelegramBot(token);
         userMessageProcessor = new UserMessageProcessor(
-            List.of(helpCommand, listCommand, startCommand, trackCommand, untrackCommand)
+            List.of(helpCommand, listCommand,
+                startCommand, trackCommand, untrackCommand
+            )
         );
 
         telegramBot.setUpdatesListener((updates) -> {
