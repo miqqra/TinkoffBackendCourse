@@ -265,9 +265,6 @@
         <!-- <module name="ExplicitInitialization"/> -->
         <module name="FallThrough"/>
         <!-- <module name="FinalLocalVariable"/> -->
-        <module name="HiddenField">
-            <property name="tokens" value="VARIABLE_DEF"/>
-        </module>
         <!-- <module name="IllegalCatch"/> -->
         <module name="IllegalInstantiation">
             <property name="classes" value="java.lang.Boolean"/>
@@ -327,11 +324,6 @@
         <!-- https://checkstyle.org/config_design.html -->
         <!--       Checks for class design             -->
         <!-- <module name="DesignForExtension"/> -->
-        <module name="FinalClass">
-            <property name="severity" value="warning"/>
-            <message key="final.class"
-                     value="Private ctor in non-final class. Inspect the code and make sure it's intended."/>
-        </module>
         <module name="HideUtilityClassConstructor"/>
         <module name="SuppressionXpathSingleFilter">
             <property name="checks" value="HideUtilityClassConstructor"/>
