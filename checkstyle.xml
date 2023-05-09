@@ -9,8 +9,7 @@
 
     <!-- https://checkstyle.org/property_types.html -->
     <property name="charset" value="UTF-8"/>
-    <property name="fileExtensions" value="java, properties, xml"/>
-
+    <property name="fileExtensions" value="java, properties, xml, yml"/>
 
     <!-- https://checkstyle.org/config_filefilters.html -->
     <!--     Excludes all 'module-info.java' files      -->
