@@ -2,9 +2,8 @@ package ru.tinkoff.edu.java.bot.wrapper;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import ru.tinkoff.edu.java.bot.commands.BotCommand;
-
 import java.util.List;
+import ru.tinkoff.edu.java.bot.commands.BotCommand;
 
 public class UserMessageProcessorImpl {
     private static List<? extends BotCommand> commands;
@@ -28,9 +27,9 @@ public class UserMessageProcessorImpl {
      */
     public SendMessage process(final Update update) {
         var a = commands
-            .stream()
-            .filter(command -> command.supports(update))
-            .findAny();
+                .stream()
+                .filter(command -> command.supports(update))
+                .findAny();
         if (a.isPresent()) {
             return a.get().handle(update);
         } else {
@@ -44,12 +43,12 @@ public class UserMessageProcessorImpl {
     public static String showAllCommands() {
         StringBuilder stringBuilder = new StringBuilder();
         commands
-            .stream()
-            .forEach(command -> stringBuilder
-                .append(command.getCommand())
-                .append(" - ")
-                .append(command.getDescription())
-                .append("\n"));
+                .stream()
+                .forEach(command -> stringBuilder
+                        .append(command.getCommand())
+                        .append(" - ")
+                        .append(command.getDescription())
+                        .append("\n"));
         return stringBuilder.toString();
     }
 }

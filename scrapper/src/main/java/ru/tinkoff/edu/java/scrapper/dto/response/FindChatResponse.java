@@ -1,14 +1,13 @@
 package ru.tinkoff.edu.java.scrapper.dto.response;
 
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.mapper.FindChatResponseLinkMapper;
-
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.DataClassRowMapper;
@@ -8,10 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
-
-import java.time.OffsetDateTime;
-import java.util.Map;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

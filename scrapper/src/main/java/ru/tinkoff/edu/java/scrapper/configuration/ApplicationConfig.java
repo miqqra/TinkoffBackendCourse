@@ -16,12 +16,12 @@ public record ApplicationConfig(@NotNull Scheduler scheduler, @NotNull AccessTyp
     }
 
     @Bean
-    public long schedulerCheckMs(ApplicationConfig config){
+    public long schedulerCheckMs(ApplicationConfig config) {
         return config.scheduler().check().toMillis();
     }
 
     @Bean
-    public AccessType accessType(ApplicationConfig config){
+    public AccessType accessType(ApplicationConfig config) {
         return config.databaseAccessType();
     }
 }

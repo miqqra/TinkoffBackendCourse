@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +17,6 @@ import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubCommitResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
-
-import java.net.URI;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

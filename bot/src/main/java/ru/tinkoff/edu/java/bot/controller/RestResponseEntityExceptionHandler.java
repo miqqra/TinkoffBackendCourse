@@ -12,39 +12,39 @@ import ru.tinkoff.edu.java.bot.exception.IncorrectDataException;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler
-    extends ResponseEntityExceptionHandler {
+        extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = IncorrectDataException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     protected ResponseEntity<ApiErrorResponse> handleBadRequestException(
-        final IncorrectDataException e, final WebRequest webRequest
+            final IncorrectDataException e, final WebRequest webRequest
     ) {
         return new ResponseEntity<>(
-            new ApiErrorResponse(
-                e.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(),
-                e.toString(),
-                webRequest.toString(),
-                null
-            ),
-            HttpStatus.BAD_REQUEST
+                new ApiErrorResponse(
+                        e.getMessage(),
+                        HttpStatus.BAD_REQUEST.toString(),
+                        e.toString(),
+                        webRequest.toString(),
+                        null
+                ),
+                HttpStatus.BAD_REQUEST
         );
     }
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<ApiErrorResponse> handleAnyOtherException(
-        final IncorrectDataException e, final WebRequest webRequest
+            final IncorrectDataException e, final WebRequest webRequest
     ) {
         return new ResponseEntity<>(
-            new ApiErrorResponse(
-                e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                e.toString(),
-                webRequest.toString(),
-                null
-            ),
-            HttpStatus.INTERNAL_SERVER_ERROR
+                new ApiErrorResponse(
+                        e.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                        e.toString(),
+                        webRequest.toString(),
+                        null
+                ),
+                HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 }

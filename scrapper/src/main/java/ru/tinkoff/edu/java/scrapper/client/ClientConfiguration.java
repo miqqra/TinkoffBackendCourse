@@ -29,7 +29,8 @@ public class ClientConfiguration {
         return new StackOverflowClient(createWebClient(STACKOVERFLOW_URL));
     }
 
-    @Bean BotClient createBotClient(){
+    @Bean
+    BotClient createBotClient() {
         return new BotClient(createWebClient(BOT_URL));
     }
 

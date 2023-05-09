@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.exception;
 
-public class IncorrectDataException extends RuntimeException{
+public class IncorrectDataException extends RuntimeException {
     /**
      * Constructs a new runtime exception with the specified detail message.
      * The cause is not initialized, and may subsequently be initialized by a

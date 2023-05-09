@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.bot.wrapper;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import ru.tinkoff.edu.java.bot.commands.BotCommand;
-
 import java.util.List;
 
 public class UserMessageProcessor {
@@ -31,14 +30,14 @@ public class UserMessageProcessor {
      */
     public SendMessage process(final Update update) {
         BotCommand correctCommand = commands
-            .stream()
-            .filter(command -> command.supports(update))
-            .findAny()
-            .orElse(null);
+                .stream()
+                .filter(command -> command.supports(update))
+                .findAny()
+                .orElse(null);
         if (correctCommand == null) {
             BotCommand anyCommand = commands().get(0);
             return new SendMessage(
-                anyCommand.getUserId(update), "Некорректная команда");
+                    anyCommand.getUserId(update), "Некорректная команда");
         }
         return correctCommand.handle(update);
     }
@@ -49,11 +48,11 @@ public class UserMessageProcessor {
     public static String showAllCommands() {
         StringBuilder stringBuilder = new StringBuilder();
         commands
-            .forEach(command -> stringBuilder
-                .append(command.getCommand())
-                .append(" - ")
-                .append(command.getDescription())
-                .append("\n"));
+                .forEach(command -> stringBuilder
+                        .append(command.getCommand())
+                        .append(" - ")
+                        .append(command.getDescription())
+                        .append("\n"));
         return stringBuilder.toString();
     }
 }

@@ -1,5 +1,9 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.jdbc;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
@@ -9,11 +13,6 @@ import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkDao;
 import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcTgChatRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkService;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
@@ -57,7 +56,7 @@ public class JdbcLinkService implements LinkService {
         } else if (chat
                 .getTrackedLinksId()
                 .stream()
-                .noneMatch(x -> x.getUrl().equals(url.toString()))){
+                .noneMatch(x -> x.getUrl().equals(url.toString()))) {
             throw new ExistingDataException("Ссылка не найдена");
         }
         return jdbcTgChatRepository

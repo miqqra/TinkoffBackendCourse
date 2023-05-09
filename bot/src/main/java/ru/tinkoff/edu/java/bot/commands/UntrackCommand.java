@@ -37,12 +37,12 @@ public final class UntrackCommand implements BotCommand {
         Long userId = getUserId(update);
         if (getArgument(update).isEmpty()) {
             return new SendMessage(
-                userId,
-                "Не указана ссылка для прекращения отслеживания");
+                    userId,
+                    "Не указана ссылка для прекращения отслеживания");
         }
         return new SendMessage(
-            userId,
-            botService.stopTrackingLink(getArgument(update), userId)
+                userId,
+                botService.stopTrackingLink(getArgument(update), userId)
         );
     }
 }

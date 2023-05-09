@@ -1,15 +1,14 @@
 package ru.tinkoff.edu.java.scrapper.mapper;
 
-import ru.tinkoff.edu.java.scrapper.chat.Link;
-import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
-import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
-import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import ru.tinkoff.edu.java.scrapper.chat.Link;
+import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 
 public class ListLinkResponseLinkMapper {
     public static ListLinksResponse linksToListLinksResponse(Collection<Link> links) {

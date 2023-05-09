@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.jpa;
 
+import java.net.URI;
+import java.util.Collection;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
@@ -8,10 +11,6 @@ import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkDao;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaTgChatRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkService;
-
-import java.net.URI;
-import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JpaLinkService implements LinkService {

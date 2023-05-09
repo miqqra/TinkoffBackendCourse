@@ -1,11 +1,10 @@
 package ru.tinkoff.edu.java.linkparser.links;
 
-import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
-import ru.tinkoff.edu.java.linkparser.parseResult.StackOverflowParseResult;
-
 import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
+import ru.tinkoff.edu.java.linkparser.parseResult.StackOverflowParseResult;
 
 public final class StackOverflowLink extends Link {
     private static final String REGEX = "^https://(ru\\.)?stackoverflow\\.com/questions/([0-9]+)(/.*)?";

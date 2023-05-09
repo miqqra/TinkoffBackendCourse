@@ -12,9 +12,6 @@ public class BotApplication {
     private BotApplication() {
     }
 
-    /**
-     * Main function.
-     */
     public static void main(final String[] args) {
         var ctx = SpringApplication.run(BotApplication.class, args);
         Bot bot = ctx.getBean(Bot.class);
