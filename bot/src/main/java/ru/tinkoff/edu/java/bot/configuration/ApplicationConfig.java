@@ -8,8 +8,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(@NotNull String token) {
+    /**
+     * Get bot token from config file.
+     */
     @Bean
-    public String getBotToken(ApplicationConfig config) {
+    public String getBotToken(final ApplicationConfig config) {
         return config.token();
     }
 }

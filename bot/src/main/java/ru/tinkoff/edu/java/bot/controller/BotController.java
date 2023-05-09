@@ -11,13 +11,23 @@ import ru.tinkoff.edu.java.bot.wrapper.Bot;
 @RestController
 @RequiredArgsConstructor
 public class BotController {
+    /**
+     * Bot.
+     */
     private final Bot bot;
 
+    /**
+     * Handle updates.
+     *
+     * @param sendUpdateRequest update.
+     */
     @PostMapping(value = "/updates")
-    public void sendUpdate(@RequestBody LinkUpdate sendUpdateRequest) {
+    public void sendUpdate(final @RequestBody LinkUpdate sendUpdateRequest) {
         sendUpdateRequest
             .getTgChatIds()
             .forEach(tgChatId ->
-                bot.execute(new SendMessage(tgChatId, sendUpdateRequest.getDescription())));
+                bot.execute(new SendMessage(
+                    tgChatId,
+                    sendUpdateRequest.getDescription())));
     }
 }

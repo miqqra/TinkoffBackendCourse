@@ -13,13 +13,22 @@ import java.net.URI;
 
 @RequiredArgsConstructor
 public class BotClient {
+    /**
+     * Web client to connect with scrapper.
+     */
     private final WebClient webClient;
 
+    /**
+     * Show commands list.
+     */
     public String showCommandsList() {
         return UserMessageProcessor.showAllCommands();
     }
 
-    public Mono<ListLinksResponse> showTrackedLinks(Long id) {
+    /**
+     * Show tracked links.
+     */
+    public Mono<ListLinksResponse> showTrackedLinks(final Long id) {
         String path = "/links";
         return webClient
             .get()
@@ -29,7 +38,10 @@ public class BotClient {
             .bodyToMono(ListLinksResponse.class);
     }
 
-    public Mono<String> registrateUser(Long id) {
+    /**
+     * Registrate user.
+     */
+    public Mono<String> registrateUser(final Long id) {
         String path = "tg-chat/%d".formatted(id);
         return webClient
             .post()
@@ -38,7 +50,11 @@ public class BotClient {
             .bodyToMono(String.class);
     }
 
-    public Mono<String> startTrackingLink(URI newLink, Long userId) {
+    /**
+     * Track new link.
+     */
+    public Mono<String> startTrackingLink(
+        final URI newLink, final Long userId) {
         String path = "/links";
         return webClient
             .post()
@@ -49,7 +65,11 @@ public class BotClient {
             .bodyToMono(String.class);
     }
 
-    public Mono<LinkResponse> stopTrackingLink(URI link, Long userId) {
+    /**
+     * Stop track link.
+     */
+    public Mono<LinkResponse> stopTrackingLink(
+        final URI link, final Long userId) {
         String path = "/links";
         return webClient
             .delete()

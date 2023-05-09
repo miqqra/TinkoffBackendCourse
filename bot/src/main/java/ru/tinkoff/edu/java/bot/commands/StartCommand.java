@@ -9,8 +9,17 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 @Component
 @RequiredArgsConstructor
 public final class StartCommand implements BotCommand {
+    /**
+     * Bot service.
+     */
     private final BotService botService;
+    /**
+     * Command name.
+     */
     private final String command = "/start";
+    /**
+     * Command description.
+     */
     private final String description = "Зарегистрировать пользователя";
 
     @Override
@@ -24,7 +33,9 @@ public final class StartCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage handle(Update update) {
-        return new SendMessage(getUserId(update), botService.registrateUser(getUserId(update)));
+    public SendMessage handle(final Update update) {
+        return new SendMessage(
+            getUserId(update),
+            botService.registrateUser(getUserId(update)));
     }
 }

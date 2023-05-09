@@ -8,9 +8,24 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ApiErrorResponse {
+    /**
+     * Error description.
+     */
     private String description;
+    /**
+     * Error http code.
+     */
     private String code;
+    /**
+     * Exception name.
+     */
     private String exceptionName;
+    /**
+     * Exception message.
+     */
     private String exceptionMessage;
+    /**
+     * Stacktrace.
+     */
     private List<String> stacktrace;
 }

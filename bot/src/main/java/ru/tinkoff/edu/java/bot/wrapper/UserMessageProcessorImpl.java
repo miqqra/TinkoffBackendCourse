@@ -9,15 +9,24 @@ import java.util.List;
 public class UserMessageProcessorImpl {
     private static List<? extends BotCommand> commands;
 
-    public UserMessageProcessorImpl(List<? extends BotCommand> commands) {
+    /**
+     * Bot command handler implementation.
+     */
+    public UserMessageProcessorImpl(final List<? extends BotCommand> commands) {
         this.commands = commands;
     }
 
+    /**
+     * Get commands.
+     */
     public List<? extends BotCommand> commands() {
         return commands;
     }
 
-    public SendMessage process(Update update) {
+    /**
+     * Handle updates.
+     */
+    public SendMessage process(final Update update) {
         var a = commands
             .stream()
             .filter(command -> command.supports(update))
@@ -29,6 +38,9 @@ public class UserMessageProcessorImpl {
         }
     }
 
+    /**
+     * To string for commands list.
+     */
     public static String showAllCommands() {
         StringBuilder stringBuilder = new StringBuilder();
         commands

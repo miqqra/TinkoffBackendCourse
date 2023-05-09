@@ -13,17 +13,29 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class BotService {
+    /**
+     * Bot client.
+     */
     private final BotClient botClient;
 
+    /**
+     * Show commands list.
+     */
     public String showCommandsList() {
         return botClient.showCommandsList();
     }
 
-    public ListLinksResponse showTrackedLinks(Long id) {
+    /**
+     * Show tracked links.
+     */
+    public ListLinksResponse showTrackedLinks(final Long id) {
         return botClient.showTrackedLinks(id).block();
     }
 
-    public String registrateUser(Long id) {
+    /**
+     * Registrate user.
+     */
+    public String registrateUser(final Long id) {
         try {
             return Objects.requireNonNull(Objects.requireNonNull(
                 botClient
@@ -34,7 +46,12 @@ public class BotService {
         }
     }
 
-    public String startTrackingLink(String newLink, Long userId) {
+    /**
+     * Track new link.
+     */
+    public String startTrackingLink(
+        final String newLink, final Long userId
+    ) {
         URI newURI;
         try {
             newURI = new URI(newLink);
@@ -52,7 +69,12 @@ public class BotService {
         return "Ссылка добавлена";
     }
 
-    public String stopTrackingLink(String link, Long userId) {
+    /**
+     * Stop track link.
+     */
+    public String stopTrackingLink(
+        final String link, final Long userId
+    ) {
         URI uri;
         try {
             uri = new URI(link);

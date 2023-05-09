@@ -9,8 +9,17 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 @Component
 @RequiredArgsConstructor
 public final class UntrackCommand implements BotCommand {
+    /**
+     * Bot service.
+     */
     private final BotService botService;
+    /**
+     * Command name.
+     */
     private final String command = "/untrack";
+    /**
+     * Command description.
+     */
     private final String description = "Прекратить отслеживание ссылки";
 
     @Override
@@ -24,10 +33,12 @@ public final class UntrackCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public SendMessage handle(final Update update) {
         Long userId = getUserId(update);
         if (getArgument(update).isEmpty()) {
-            return new SendMessage(userId, "Не указана ссылка для прекращения отслеживания");
+            return new SendMessage(
+                userId,
+                "Не указана ссылка для прекращения отслеживания");
         }
         return new SendMessage(
             userId,

@@ -9,8 +9,17 @@ import ru.tinkoff.edu.java.bot.service.BotService;
 @Component
 @RequiredArgsConstructor
 public final class HelpCommand implements BotCommand {
+    /**
+     * Bot service.
+     */
     private final BotService botService;
+    /**
+     * Command name.
+     */
     private final String command = "/help";
+    /**
+     * Command description.
+     */
     private final String description = "Вывести окно с командами";
 
     @Override
@@ -24,7 +33,7 @@ public final class HelpCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public SendMessage handle(final Update update) {
         Long userId = getUserId(update);
         return new SendMessage(
             userId,

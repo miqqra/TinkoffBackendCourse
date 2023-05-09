@@ -8,5 +8,8 @@ import java.net.URI;
 @Data
 @AllArgsConstructor
 public class AddLinkRequest {
+    /**
+     * Tracked link url.
+     */
     private URI link;
 }

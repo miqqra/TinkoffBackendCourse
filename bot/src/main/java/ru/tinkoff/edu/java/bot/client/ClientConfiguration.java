@@ -9,6 +9,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @Configuration
 public class ClientConfiguration {
+    /**
+     * Scrapper url.
+     */
     @Value("${client.url.scrapper}")
     private static final String SCRAPPER_URL = "http://localhost:8080/";
 
@@ -17,7 +20,7 @@ public class ClientConfiguration {
         return new BotClient(createWebClient(SCRAPPER_URL));
     }
 
-    private WebClient createWebClient(String baseUrl) {
+    private WebClient createWebClient(final String baseUrl) {
         return WebClient.builder()
             .baseUrl(baseUrl)
             .build();

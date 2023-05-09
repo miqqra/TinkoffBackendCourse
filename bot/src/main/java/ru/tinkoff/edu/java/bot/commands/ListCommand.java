@@ -12,8 +12,17 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public final class ListCommand implements BotCommand {
+    /**
+     * Bot service.
+     */
     private final BotService botService;
+    /**
+     * Command name.
+     */
     private final String command = "/list";
+    /**
+     * Command description.
+     */
     private final String description = "Показать список отслеживаемых ссылок";
 
     @Override
@@ -27,20 +36,24 @@ public final class ListCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public SendMessage handle(final Update update) {
         Long userId = getUserId(update);
-        List<LinkResponse> listLinksResponse = botService.showTrackedLinks(userId).links();
-        String result = listLinksResponse.isEmpty() ? "Нет отслеживаемых ссылок" : prettyPrint(listLinksResponse);
+        List<LinkResponse> listLinksResponse =
+            botService.showTrackedLinks(userId).links();
+        String result = listLinksResponse.isEmpty()
+            ? "Нет отслеживаемых ссылок"
+            : prettyPrint(listLinksResponse);
         return new SendMessage(
             userId,
             result
         );
     }
 
-    private String prettyPrint(List<LinkResponse> linkResponses) {
+    private String prettyPrint(final List<LinkResponse> linkResponses) {
         StringBuilder stringBuilder = new StringBuilder();
         linkResponses
-            .forEach(linkResponse -> stringBuilder.append(linkResponse.url()).append("\n"));
+            .forEach(linkResponse ->
+                stringBuilder.append(linkResponse.url()).append("\n"));
         return stringBuilder.toString();
     }
 }
