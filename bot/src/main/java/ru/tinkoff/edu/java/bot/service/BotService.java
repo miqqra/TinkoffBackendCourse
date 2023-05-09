@@ -13,6 +13,7 @@ import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 @RequiredArgsConstructor
 public class BotService {
     private final BotClient botClient;
+    private final static String INCORRECT_LINK = "Некорректная ссылка";
 
     public String showCommandsList() {
         return botClient.showCommandsList();
@@ -40,7 +41,7 @@ public class BotService {
         try {
             newURI = new URI(newLink);
         } catch (URISyntaxException e) {
-            return "Некорректная ссылка";
+            return INCORRECT_LINK;
         }
 
         try {
@@ -60,7 +61,7 @@ public class BotService {
         try {
             uri = new URI(link);
         } catch (URISyntaxException e) {
-            return "Некорректная ссылка";
+            return INCORRECT_LINK;
         }
 
         try {
@@ -68,7 +69,6 @@ public class BotService {
                     .stopTrackingLink(uri, userId)
                     .block();
         } catch (WebClientResponseException e) {
-            e.printStackTrace();
             return "Ошибка сервера";
         }
         return "Ссылка больше не отслеживается";

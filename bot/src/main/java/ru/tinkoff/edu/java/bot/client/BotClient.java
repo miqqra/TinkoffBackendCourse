@@ -10,20 +10,22 @@ import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.wrapper.UserMessageProcessor;
 
+
 @RequiredArgsConstructor
 public class BotClient {
     private final WebClient webClient;
+    private final static String LINKS_REQUEST = "/links";
+    private final static String TG_CHAT_ID = "tgChatId";
 
     public String showCommandsList() {
         return UserMessageProcessor.showAllCommands();
     }
 
     public Mono<ListLinksResponse> showTrackedLinks(final Long id) {
-        String path = "/links";
         return webClient
                 .get()
-                .uri(path)
-                .header("tgChatId", id.toString())
+                .uri(LINKS_REQUEST)
+                .header(TG_CHAT_ID, id.toString())
                 .retrieve()
                 .bodyToMono(ListLinksResponse.class);
     }
@@ -39,24 +41,22 @@ public class BotClient {
 
     public Mono<String> startTrackingLink(
             final URI newLink, final Long userId) {
-        String path = "/links";
         return webClient
                 .post()
-                .uri(path)
+                .uri(LINKS_REQUEST)
                 .body(BodyInserters.fromValue(new AddLinkRequest(newLink)))
-                .header("tgChatId", userId.toString())
+                .header(TG_CHAT_ID, userId.toString())
                 .retrieve()
                 .bodyToMono(String.class);
     }
 
     public Mono<LinkResponse> stopTrackingLink(
             final URI link, final Long userId) {
-        String path = "/links";
         return webClient
                 .delete()
-                .uri(path)
+                .uri(LINKS_REQUEST)
                 .headers(httpHeaders -> {
-                    httpHeaders.set("tgChatId", userId.toString());
+                    httpHeaders.set(TG_CHAT_ID, userId.toString());
                     httpHeaders.set("url", link.toString());
                 })
                 .retrieve()

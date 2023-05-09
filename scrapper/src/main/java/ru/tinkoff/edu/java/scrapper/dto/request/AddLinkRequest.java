@@ -1,8 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.dto.request;
 
+import java.net.URI;
 import lombok.Data;
 
-import java.net.URI;
 
 @Data
 public class AddLinkRequest {
