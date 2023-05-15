@@ -1,9 +1,12 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowClient;
@@ -12,9 +15,7 @@ import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackOverflowInfoResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
 
-import java.net.URI;
-import java.util.List;
-
+@Service
 @RequiredArgsConstructor
 public abstract class ClientService {
     protected final GitHubClient gitHubClient;

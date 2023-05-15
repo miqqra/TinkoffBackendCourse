@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +16,6 @@ import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.exception.IncorrectDataException;
 import ru.tinkoff.edu.java.scrapper.mapper.ListLinkResponseLinkMapper;
 import ru.tinkoff.edu.java.scrapper.service.LinkService;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @RestController
 @RequiredArgsConstructor

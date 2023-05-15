@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
-import ru.tinkoff.edu.java.scrapper.chat.Link;
-
 import java.net.URI;
 import java.util.Collection;
+import ru.tinkoff.edu.java.scrapper.chat.Link;
 
 public interface LinkService {
     Link add(long tgChatId, URI url);

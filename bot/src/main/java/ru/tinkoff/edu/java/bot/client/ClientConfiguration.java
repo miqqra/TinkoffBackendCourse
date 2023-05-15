@@ -17,7 +17,7 @@ public class ClientConfiguration {
         return new BotClient(createWebClient(SCRAPPER_URL));
     }
 
-    private WebClient createWebClient(String baseUrl) {
+    private WebClient createWebClient(final String baseUrl) {
         return WebClient.builder()
                 .baseUrl(baseUrl)
                 .build();

@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.bot.dto.request;
 
-import lombok.Data;
-
 import java.net.URI;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class LinkUpdateRequest {

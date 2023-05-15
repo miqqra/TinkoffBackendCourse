@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.DataClassRowMapper;
@@ -10,10 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.chat.Chat;
 import ru.tinkoff.edu.java.scrapper.chat.Link;
 import ru.tinkoff.edu.java.scrapper.dto.response.FindChatResponse;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

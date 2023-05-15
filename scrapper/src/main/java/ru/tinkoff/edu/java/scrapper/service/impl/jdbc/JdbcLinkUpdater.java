@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.jdbc;
 
+import java.net.URI;
+import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +17,6 @@ import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcTgChatRepository;
 import ru.tinkoff.edu.java.scrapper.service.ClientService;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdater;
 
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JdbcLinkUpdater extends LinkUpdater {

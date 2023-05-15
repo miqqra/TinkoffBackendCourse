@@ -17,7 +17,7 @@ public class IncorrectDataException extends RuntimeException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public IncorrectDataException(String message) {
+    public IncorrectDataException(final String message) {
         super(message);
     }
 }

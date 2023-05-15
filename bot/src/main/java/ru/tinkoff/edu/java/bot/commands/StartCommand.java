@@ -24,7 +24,9 @@ public final class StartCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage handle(Update update) {
-        return new SendMessage(getUserId(update), botService.registrateUser(getUserId(update)));
+    public SendMessage handle(final Update update) {
+        return new SendMessage(
+                getUserId(update),
+                botService.registrateUser(getUserId(update)));
     }
 }

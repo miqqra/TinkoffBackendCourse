@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.service.impl.jpa;
 
+import java.net.URI;
+import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import ru.tinkoff.edu.java.linkparser.LinkParser;
@@ -11,10 +14,6 @@ import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkDao;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaTgChatRepository;
 import ru.tinkoff.edu.java.scrapper.service.LinkUpdater;
 import ru.tinkoff.edu.java.scrapper.service.impl.sync.BotClientService;
-
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JpaLinkUpdater extends LinkUpdater {

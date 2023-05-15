@@ -1,8 +1,7 @@
 package ru.tinkoff.edu.java.linkparser.links;
 
-import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
-
 import java.net.URI;
+import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
 
 public sealed abstract class Link permits GitHubLink, StackOverflowLink {
     public Link nextLink;

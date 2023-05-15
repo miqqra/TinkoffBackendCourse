@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.bot.dto.request;
 
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.net.URI;
 
 @Data
 @AllArgsConstructor

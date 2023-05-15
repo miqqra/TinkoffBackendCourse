@@ -12,7 +12,7 @@ public record ApplicationConfig(@NotNull String token,
                                 @NotNull Boolean useQueue,
                                 @NotNull RabbitMQNames rabbitMQNames) {
     @Bean
-    public String getBotToken(ApplicationConfig config) {
+    public String getBotToken(final ApplicationConfig config) {
         return config.token();
     }
 

@@ -1,14 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
-import ru.tinkoff.edu.java.linkparser.LinkParser;
-import ru.tinkoff.edu.java.linkparser.parseResult.GitHubParseResult;
-import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
-import ru.tinkoff.edu.java.linkparser.parseResult.StackOverflowParseResult;
-import ru.tinkoff.edu.java.scrapper.chat.Chat;
-import ru.tinkoff.edu.java.scrapper.chat.Link;
-import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubCommitResponse;
-import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -18,6 +9,14 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import ru.tinkoff.edu.java.linkparser.LinkParser;
+import ru.tinkoff.edu.java.linkparser.parseResult.GitHubParseResult;
+import ru.tinkoff.edu.java.linkparser.parseResult.ParseResult;
+import ru.tinkoff.edu.java.linkparser.parseResult.StackOverflowParseResult;
+import ru.tinkoff.edu.java.scrapper.chat.Chat;
+import ru.tinkoff.edu.java.scrapper.chat.Link;
+import ru.tinkoff.edu.java.scrapper.dto.response.GetGitHubCommitResponse;
+import ru.tinkoff.edu.java.scrapper.dto.response.GetStackoverflowAnswerResponse;
 
 public abstract class LinkUpdater {
 
